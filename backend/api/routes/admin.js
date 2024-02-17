@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // importing modals
 const CollegeDetails = require("../models/collegedetails");
@@ -9,13 +10,13 @@ const AdminDetails = require("../models/admin");
 
 // Admin Related Routes
 router.get("/", (req, res, next) => {
-    AdminDetails.find()
+  AdminDetails.find()
     .exec()
     .then((results) => {
       if (!results || results == "" || results.length < 1) {
         return res.status(401).json({
           error: "No data found",
-          results: results
+          results: results,
         });
       } else {
         res.status(200).json(results);
@@ -32,10 +33,10 @@ router.get("/", (req, res, next) => {
 router.patch("/updateAdminAuth/:id", (req, res, next) => {
   const id = req.params.id;
   const updateOps = {};
-  
+
   for (const ops of req.body) {
     // Check if the field being updated is the password
-    if (ops.propName === 'password') {
+    if (ops.propName === "password") {
       // Hash the new password before updating
       const hashedPassword = bcrypt.hashSync(ops.value, 10); // Hash the password with a salt round of 10
       updateOps[ops.propName] = hashedPassword;
@@ -50,47 +51,58 @@ router.patch("/updateAdminAuth/:id", (req, res, next) => {
       console.log(result);
       res.status(200).json({
         message: "Updated",
-        result: result
+        result: result,
       });
     })
     .catch((err) => {
       console.log(err);
       res.status(400).json({
-        error: err
+        error: err,
       });
     });
 });
 
-router.post('/loginAdmin', (req, res, next) => {
+router.post("/loginAdmin", (req, res, next) => {
   AdminDetails.findOne({ username: req.body.username })
     .exec()
-    .then(admin => {
+    .then((admin) => {
       if (!admin) {
         return res.status(401).json({
-          message: 'Auth Failed'
+          message: "Auth Failed",
         });
       }
       bcrypt.compare(req.body.password, admin.password, (err, result) => {
         if (err) {
           return res.status(401).json({
-            message: 'Auth Failed'
+            message: "Auth Failed",
           });
         }
         if (result) {
+          const  token = jwt.sign(
+            {
+              username: admin.username,
+              userID: admin._id,
+            },
+            "SECRET_KEY",
+            {
+              expiresIn: "1h",
+            },
+          );
           return res.status(200).json({
-            message: 'Auth Success'
+            message: "Auth Success",
+            token: token
           });
         }
         res.status(401).json({
-          message: 'Auth Failed',
-          result: result
+          message: "Auth Failed",
+          result: result,
         });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
-        error: err
+        error: err,
       });
     });
 });
@@ -102,7 +114,7 @@ router.post("/addCollege/", (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     if (err) {
       return res.status(500).json({
-        error: err
+        error: err,
       });
     }
 
@@ -184,7 +196,7 @@ router.patch("/updateCollege/:collegeID", (req, res, next) => {
   const updateOps = {};
 
   for (const ops of req.body) {
-    if (ops.propName === 'password') {
+    if (ops.propName === "password") {
       // Hash the new password before updating
       const hashedPassword = bcrypt.hashSync(ops.value, 10); // Hash the password with a salt round of 10
       updateOps[ops.propName] = hashedPassword;
