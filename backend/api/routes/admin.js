@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const CollegeDetails = require("../models/collegedetails");
 const AdminDetails = require("../models/admin");
 
+// Admin Related Routes
 router.get("/", (req, res, next) => {
     AdminDetails.find()
     .exec()
@@ -94,34 +95,45 @@ router.post('/loginAdmin', (req, res, next) => {
     });
 });
 
+// ============================================== //
+
 // College Related Routes
 router.post("/addCollege/", (req, res, next) => {
-  const collegeDetails = new CollegeDetails({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    center_code: req.body.center_code,
-    college_type: req.body.college_type,
-    college_departments_count: req.body.college_departments_count,
-    address: req.body.address,
-    contact: req.body.contact,
-    email: req.body.email,
-    password: req.body.password,
-  });
-  collegeDetails
-    .save()
-    .then((result) => {
-      console.log(result);
-      res.status(200).json({
-        message: "College Added To Database",
-        college_added: collegeDetails,
+  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({
+        error: err
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
+    }
+
+    const collegeDetails = new CollegeDetails({
+      _id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      center_code: req.body.center_code,
+      college_type: req.body.college_type,
+      college_departments_count: req.body.college_departments_count,
+      address: req.body.address,
+      contact: req.body.contact,
+      email: req.body.email,
+      password: hashedPassword,
     });
+
+    collegeDetails
+      .save()
+      .then((result) => {
+        console.log(result);
+        res.status(200).json({
+          message: "College Added To Database",
+          college_added: collegeDetails,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: err,
+        });
+      });
+  });
 });
 
 router.get("/colleges/", (req, res, next) => {
@@ -170,9 +182,17 @@ router.get("/colleges/:collegeID", (req, res, next) => {
 router.patch("/updateCollege/:collegeID", (req, res, next) => {
   const id = req.params.collegeID;
   const updateOps = {};
+
   for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
+    if (ops.propName === 'password') {
+      // Hash the new password before updating
+      const hashedPassword = bcrypt.hashSync(ops.value, 10); // Hash the password with a salt round of 10
+      updateOps[ops.propName] = hashedPassword;
+    } else {
+      updateOps[ops.propName] = ops.value;
+    }
   }
+
   CollegeDetails.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then((result) => {
