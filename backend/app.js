@@ -8,7 +8,6 @@ const adminRoutes = require("./api/routes/admin");
 
 mongoose.connect("mongodb://localhost:27017/CentralAssessmentProgram");
 
-// using morgan to log data in console
 app.use(morgan("dev"));
 
 app.use(bodyParser.urlencoded({ extended: false })); // parse url encoded values
