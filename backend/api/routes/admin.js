@@ -3,13 +3,64 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require('dotenv').config()
+
+const checkAuth = require("../middleware/check-auth");
 
 // importing modals
-const CollegeDetails = require("../models/collegedetails");
-const AdminDetails = require("../models/admin");
+const CollegeDetails = require("../models/collegeportal/collegedetails");
+const AdminDetails = require("../models/admin/admin");
+
+
+// Login
+router.post("/loginAdmin", (req, res, next) => {
+  AdminDetails.findOne({ username: req.body.username })
+    .exec()
+    .then((admin) => {
+      if (!admin) {
+        return res.status(401).json({
+          message: "Auth Failed",
+        });
+      }
+      bcrypt.compare(req.body.password, admin.password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Auth Failed",
+          });
+        }
+        if (result) {
+          const  token = jwt.sign(
+            {
+              username: admin.username,
+              userID: admin._id,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1h",
+            },
+          );
+          res.setHeader('Authorization', `Bearer ${token}`);
+          return res.status(200).json({
+            message: "Auth Success",
+            token: token,
+          });
+        }
+        res.status(401).json({
+          message: "Auth Failed",
+          result: result,
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
 
 // Admin Related Routes
-router.get("/", (req, res, next) => {
+router.get("/",checkAuth , (req, res, next) => {
   AdminDetails.find()
     .exec()
     .then((results) => {
@@ -30,7 +81,7 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.patch("/updateAdminAuth/:id", (req, res, next) => {
+router.patch("/updateAdminAuth/:id",checkAuth , (req, res, next) => {
   const id = req.params.id;
   const updateOps = {};
 
@@ -62,55 +113,10 @@ router.patch("/updateAdminAuth/:id", (req, res, next) => {
     });
 });
 
-router.post("/loginAdmin", (req, res, next) => {
-  AdminDetails.findOne({ username: req.body.username })
-    .exec()
-    .then((admin) => {
-      if (!admin) {
-        return res.status(401).json({
-          message: "Auth Failed",
-        });
-      }
-      bcrypt.compare(req.body.password, admin.password, (err, result) => {
-        if (err) {
-          return res.status(401).json({
-            message: "Auth Failed",
-          });
-        }
-        if (result) {
-          const  token = jwt.sign(
-            {
-              username: admin.username,
-              userID: admin._id,
-            },
-            "SECRET_KEY",
-            {
-              expiresIn: "1h",
-            },
-          );
-          return res.status(200).json({
-            message: "Auth Success",
-            token: token
-          });
-        }
-        res.status(401).json({
-          message: "Auth Failed",
-          result: result,
-        });
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
-    });
-});
-
 // ============================================== //
 
 // College Related Routes
-router.post("/addCollege/", (req, res, next) => {
+router.post("/addCollege/",checkAuth , (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     if (err) {
       return res.status(500).json({
@@ -148,7 +154,7 @@ router.post("/addCollege/", (req, res, next) => {
   });
 });
 
-router.get("/colleges/", (req, res, next) => {
+router.get("/colleges/",checkAuth , (req, res, next) => {
   CollegeDetails.find()
     .exec()
     .then((results) => {
@@ -168,7 +174,7 @@ router.get("/colleges/", (req, res, next) => {
     });
 });
 
-router.get("/colleges/:collegeID", (req, res, next) => {
+router.get("/colleges/:collegeID",checkAuth , (req, res, next) => {
   const id = req.params.collegeID;
   CollegeDetails.findById(id)
     .exec()
@@ -191,7 +197,7 @@ router.get("/colleges/:collegeID", (req, res, next) => {
     });
 });
 
-router.patch("/updateCollege/:collegeID", (req, res, next) => {
+router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
   const id = req.params.collegeID;
   const updateOps = {};
 
@@ -220,7 +226,7 @@ router.patch("/updateCollege/:collegeID", (req, res, next) => {
     });
 });
 
-router.delete("/deleteCollege/:collegeID", (req, res, next) => {
+router.delete("/deleteCollege/:collegeID",checkAuth , (req, res, next) => {
   const id = req.params.collegeID;
   CollegeDetails.deleteOne({ _id: id })
     .exec()
