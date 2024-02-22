@@ -303,7 +303,7 @@ router.post("/addSubject", (req, res, next) => {
     });
 })
 
-// Update SUbject Data
+// Update Subject Data
 router.patch("/updateSubject/:subjectID", (req, res, next) => {
   const id = req.params.subjectID;
   const updateOps = {};
