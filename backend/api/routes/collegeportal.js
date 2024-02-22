@@ -10,7 +10,8 @@ const checkAuth = require("../middleware/check-auth");
 const CollegeDetails = require("../models/collegeportal/collegedetails");
 const DepartmentDetails = require("../models/collegeportal/departmentdetails");
 const BillingDetails = require("../models/collegeportal/billing");
-const TeacherDetails = require("../models/collegeportal/teachers")
+const TeacherDetails = require("../models/collegeportal/teachers");
+const SubjectDetails = require("../models/collegeportal/subject");
 
 // =================================================== //
 // Fetch College Details
@@ -274,5 +275,57 @@ router.patch("/updateTeacher/:teacherID", (req, res, next) => {
 })
 
 // =================================================== //
+// Add Subject
+router.post("/addSubject", (req, res, next) => {
+  const subjectDetails = new SubjectDetails({
+    _id: new mongoose.Types.ObjectId(),
+    department: req.body.department,
+    subject_name: req.body.subject_name,
+    subject_code: req.body.subject_code,
+    subject_type: req.body.subject_type,
+    pattern: req.body.pattern,
+  });
+
+  subjectDetails
+  .save()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({
+        message: "Subject Added To Database",
+        Subject_Details: subjectDetails,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+})
+
+// Update SUbject Data
+router.patch("/updateSubject/:subjectID", (req, res, next) => {
+  const id = req.params.subjectID;
+  const updateOps = {};
+
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+
+  SubjectDetails.updateOne({ _id: id }, { $set: updateOps })
+    .exec()
+    .then((result) => {
+      res.status(200).json({
+        message: `Data updated successfully for the Subject with ID ${id}`,
+        result: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+})
 
 module.exports = router;
