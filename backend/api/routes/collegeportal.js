@@ -4,11 +4,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const checkAuth = require("../middleware/check-auth");
+
 // importing modals
 const CollegeDetails = require("../models/collegeportal/collegedetails");
 const DepartmentDetails = require("../models/collegeportal/departmentdetails");
+const BillingDetails = require("../models/collegeportal/billing");
 
-router.get("/collegeDetails/", (req, res, next) => {
+router.get("/collegeDetails/",checkAuth , (req, res, next) => {
   CollegeDetails.find()
     .exec()
     .then((results) => {
@@ -29,7 +32,7 @@ router.get("/collegeDetails/", (req, res, next) => {
 });
 
 // update college info
-router.patch("/updateCollege/:collegeID", (req, res, next) => {
+router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
   const id = req.params.collegeID;
   const updateOps = {};
 
@@ -110,7 +113,7 @@ router.post("/addDepartment/",checkAuth , (req, res, next) => {
 });
 
 // fetch all departments
-router.get("/departments/", (req, res, next) => {
+router.get("/departments/",checkAuth , (req, res, next) => {
   DepartmentDetails.find()
     .exec()
     .then((results) => {
@@ -131,7 +134,7 @@ router.get("/departments/", (req, res, next) => {
 });
 
 // update dept info
-router.patch("/updateDepartment/:deptID", (req, res, next) => {
+router.patch("/updateDepartment/:deptID",checkAuth , (req, res, next) => {
   const id = req.params.deptID;
   const updateOps = {};
 
@@ -160,5 +163,13 @@ router.patch("/updateDepartment/:deptID", (req, res, next) => {
       });
     });
 });
+
+// Add Billing Data
+router.post("/addBillingData",checkAuth , (req, res, next) => {
+  const billingDetails = new BillingDetails({
+    _id: new mongoose.Types.ObjectId(),
+    userID: req.body.userID,
+  })
+})
 
 module.exports = router;

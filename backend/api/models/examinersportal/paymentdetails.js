@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const examinerPaymentDetailsSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  usernID: { type: String, require: true },
+  userID: { type: String, require: true },
   email: { type: String, require: true },
   name: { type: String, require: true },
   payment_status: {type: String, require: true, default: 'pending'},

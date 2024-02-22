@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const examinerProfileDetailsSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
 
-  usernID: { type: String, require: true }, // dynamically generated
+  userID: { type: String, require: true }, // dynamically generated
   email: { type: String, require: true },
   password: { type: String, require: true },
   
