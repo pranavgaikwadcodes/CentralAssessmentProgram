@@ -109,6 +109,56 @@ router.post("/addDepartment/",checkAuth , (req, res, next) => {
   });
 });
 
+// fetch all departments
+router.get("/departments/", (req, res, next) => {
+  DepartmentDetails.find()
+    .exec()
+    .then((results) => {
+      if (!results || results == "" || results.length < 1) {
+        return res.status(401).json({
+          error: "No data found",
+        });
+      } else {
+        res.status(200).json(results);
+      }
+    })
+    .catch((error) => {
+      console.log("Error in Fetching Data from Database");
+      res.status(500).json({
+        error: error,
+      });
+    });
+});
 
+// update dept info
+router.patch("/updateDepartment/:deptID", (req, res, next) => {
+  const id = req.params.deptID;
+  const updateOps = {};
+
+  for (const ops of req.body) {
+    if (ops.propName === "password") {
+      // Hash the new password before updating
+      const hashedPassword = bcrypt.hashSync(ops.value, 10); // Hash the password with a salt round of 10
+      updateOps[ops.propName] = hashedPassword;
+    } else {
+      updateOps[ops.propName] = ops.value;
+    }
+  }
+
+  DepartmentDetails.updateOne({ _id: id }, { $set: updateOps })
+    .exec()
+    .then((result) => {
+      res.status(200).json({
+        message: `Data updated successfully for the college with ID ${id}`,
+        result: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
 
 module.exports = router;
