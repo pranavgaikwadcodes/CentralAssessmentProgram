@@ -10,7 +10,10 @@ const checkAuth = require("../middleware/check-auth");
 const CollegeDetails = require("../models/collegeportal/collegedetails");
 const DepartmentDetails = require("../models/collegeportal/departmentdetails");
 const BillingDetails = require("../models/collegeportal/billing");
+const TeacherDetails = require("../models/collegeportal/teachers")
 
+// =================================================== //
+// Fetch College Details
 router.get("/collegeDetails/",checkAuth , (req, res, next) => {
   CollegeDetails.find()
     .exec()
@@ -61,6 +64,7 @@ router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
     });
 });
 
+// =================================================== //
 // add new department
 router.post("/addDepartment/",checkAuth , (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
@@ -152,7 +156,7 @@ router.patch("/updateDepartment/:deptID",checkAuth , (req, res, next) => {
     .exec()
     .then((result) => {
       res.status(200).json({
-        message: `Data updated successfully for the college with ID ${id}`,
+        message: `Data updated successfully for the college detpt. with ID ${id}`,
         result: result,
       });
     })
@@ -164,12 +168,111 @@ router.patch("/updateDepartment/:deptID",checkAuth , (req, res, next) => {
     });
 });
 
+// =================================================== //
 // Add Billing Data
 router.post("/addBillingData",checkAuth , (req, res, next) => {
   const billingDetails = new BillingDetails({
     _id: new mongoose.Types.ObjectId(),
     userID: req.body.userID,
-  })
+    email: req.body.email,
+    name: req.body.name,
+    payment_status: req.body.payment_status,
+    payment_method: req.body.payment_method,
+    transaction_id: req.body.transaction_id,
+    transaction_day_date: req.body.transaction_day_date,
+  });
+
+  billingDetails
+    .save()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({
+        message: "Billing Added To Database",
+        Billing_Details: billingDetails,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
 })
+
+// Fetch Billing Data
+router.get("/billing",checkAuth , (req, res, next) => {
+  BillingDetails.find()
+    .exec()
+    .then((results) => {
+      if (!results || results == "" || results.length < 1) {
+        return res.status(401).json({
+          error: "No data found",
+        });
+      } else {
+        res.status(200).json(results);
+      }
+    })
+    .catch((error) => {
+      console.log("Error in Fetching Data from Database");
+      res.status(500).json({
+        error: error,
+      });
+    });
+});
+
+// =================================================== //
+// Add Teacher Data
+router.post("/addTeacher", (req, res, next) => {
+  const teacherDetails = new TeacherDetails({
+    _id: new mongoose.Types.ObjectId(),
+    name: req.body.name,
+    designation: req.body.designation,
+    college_email: req.body.college_email,
+    contact: req.body.contact,
+  });
+
+  teacherDetails
+    .save()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({
+        message: "Teacher Added To Database",
+        Teacher_Details: teacherDetails,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+})
+
+// Update Teacher Data
+router.patch("/updateTeacher/:teacherID", (req, res, next) => {
+  const id = req.params.teacherID;
+  const updateOps = {};
+
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+
+  TeacherDetails.updateOne({ _id: id }, { $set: updateOps })
+    .exec()
+    .then((result) => {
+      res.status(200).json({
+        message: `Data updated successfully for the Teacher with ID ${id}`,
+        result: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+})
+
+// =================================================== //
 
 module.exports = router;
