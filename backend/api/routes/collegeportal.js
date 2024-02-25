@@ -12,6 +12,7 @@ const DepartmentDetails = require("../models/collegeportal/departmentdetails");
 const BillingDetails = require("../models/collegeportal/billing");
 const TeacherDetails = require("../models/collegeportal/teachers");
 const SubjectDetails = require("../models/collegeportal/subject");
+const BundleDetails = require("../models/collegeportal/bundle");
 
 // =================================================== //
 // Fetch College Details
@@ -317,6 +318,64 @@ router.patch("/updateSubject/:subjectID", (req, res, next) => {
     .then((result) => {
       res.status(200).json({
         message: `Data updated successfully for the Subject with ID ${id}`,
+        result: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+})
+
+// =================================================== //
+// Add Bundle
+router.post("/addBundle", (req, res, next) => {
+  const bundleDetails = new BundleDetails({
+    _id: new mongoose.Types.ObjectId(),
+    department: req.body.department,
+    bundle_ID: req.body.bundle_ID,
+    subject: req.body.subject,
+    pattern: req.body.pattern,
+    bundle_number: req.body.bundle_number,
+    number_of_bundles_for_this_subject: req.body.number_of_bundles_for_this_subject,
+    number_of_papers_in_bundle: req.body.number_of_papers_in_bundle,
+    bundle_status: req.body.bundle_status,
+    assigned_to: req.body.assigned_to,
+  });
+
+  bundleDetails
+  .save()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({
+        message: "Bundle Added To Database",
+        Bundle_Details: bundleDetails,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+})
+
+// Update Bundle Data -> assign or unassign will be in this
+router.patch("/updateBundle/:BundleID", (req, res, next) => {
+  const id = req.params.BundleID;
+  const updateOps = {};
+
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+
+  BundleDetails.updateOne({ _id: id }, { $set: updateOps })
+    .exec()
+    .then((result) => {
+      res.status(200).json({
+        message: `Data updated successfully for the Bundle with ID ${id}`,
         result: result,
       });
     })
