@@ -13,6 +13,7 @@ const BillingDetails = require("../models/collegeportal/billing");
 const TeacherDetails = require("../models/collegeportal/teachers");
 const SubjectDetails = require("../models/collegeportal/subject");
 const BundleDetails = require("../models/collegeportal/bundle");
+const ExaminersDetails = require("../models/examinersportal/profile");
 
 // =================================================== //
 // Fetch College Details
@@ -386,5 +387,32 @@ router.patch("/updateBundle/:BundleID", (req, res, next) => {
       });
     });
 })
+
+// Fetch Examiners Details by Role
+router.get("/examiners/:role", (req, res, next) => {
+  const role = req.params.role; // Extract the role from request parameters
+  ExaminerProfileDetails.find({ role: role }) // Find examiners with the specified role
+    .exec()
+    .then((examiners) => {
+      if (examiners.length === 0) {
+        // If no examiners found, return a 404 response
+        return res.status(404).json({
+          message: "No examiners found",
+        });
+      }
+      // If examiners found, return a 200 response with the examiners data
+      res.status(200).json({
+        message: "Examiners found",
+        examiners: examiners,
+      });
+    })
+    .catch((err) => {
+      // Handle errors if any occur during the database query
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
 
 module.exports = router;
