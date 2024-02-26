@@ -15,6 +15,54 @@ const SubjectDetails = require("../models/collegeportal/subject");
 const BundleDetails = require("../models/collegeportal/bundle");
 const ExaminersDetails = require("../models/examinersportal/profile");
 
+
+// LOGIN
+router.post("/loginCollege", (req, res, next) => {
+  CollegeDetails.findOne({ username: req.body.username })
+    .exec()
+    .then((collegeData) => {
+      if (!collegeData) {
+        return res.status(401).json({
+          message: "Auth Failed",
+        });
+      }
+      bcrypt.compare(req.body.password, collegeData.password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Auth Failed",
+          });
+        }
+        if (result) {
+          const  token = jwt.sign(
+            {
+              username: collegeData.username,
+              userID: collegeData._id,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1h",
+            },
+          );
+          res.setHeader('Authorization', `Bearer ${token}`);
+          return res.status(200).json({
+            message: "Auth Success",
+            token: token,
+          });
+        }
+        res.status(401).json({
+          message: "Auth Failed",
+          result: result,
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
 // =================================================== //
 // Fetch College Details
 router.get("/collegeDetails/",checkAuth , (req, res, next) => {
