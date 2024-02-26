@@ -13,6 +13,120 @@ const BillingDetails = require("../models/collegeportal/billing");
 const CardDetails = require("../models/examinersportal/card");
 const BundleDetails = require("../models/collegeportal/bundle");
 
+// Register
+router.post("/registerExaminer", (req, res, next) => {
+  const {
+    email,
+    password,
+    name,
+    phone,
+    college_name,
+    college_code,
+    experience,
+    branch,
+    PAN_card_number,
+    bank_IFSC_code,
+    bank_account_number,
+    UPI_id
+  } = req.body;
+
+  // Hash the password
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({
+        error: err
+      });
+    }
+
+    // Extract the email prefix
+    const emailPrefix = email.split("@")[0];
+
+    // Generate a random number
+    const randomNumber = Math.floor(Math.random() * 10000);
+
+    // Concatenate email prefix and random number to generate userID
+    const userID = `${emailPrefix}${randomNumber}`;
+
+    const newExaminer = new ExaminerProfileDetails({
+      userID: userID,
+      email: email,
+      password: hashedPassword, // Save hashed password
+      name: name,
+      phone: phone,
+      college_name: college_name,
+      college_code: college_code,
+      experience: experience,
+      branch: branch,
+      PAN_card_number: PAN_card_number,
+      bank_IFSC_code: bank_IFSC_code,
+      bank_account_number: bank_account_number,
+      UPI_id: UPI_id
+    });
+
+    newExaminer.save()
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          message: "Examiner registered successfully",
+          examiner: result
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  });
+});
+
+// Login
+router.post("/loginExaminer", (req, res, next) => {
+  ProfileDetails.findOne({ username: req.body.username })
+    .exec()
+    .then((examiner) => {
+      if (!examiner) {
+        return res.status(401).json({
+          message: "Auth Failed",
+        });
+      }
+      bcrypt.compare(req.body.password, examiner.password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Auth Failed",
+          });
+        }
+        if (result) {
+          const  token = jwt.sign(
+            {
+              username: examiner.username,
+              userID: examiner._id,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1h",
+            },
+          );
+          res.setHeader('Authorization', `Bearer ${token}`);
+          return res.status(200).json({
+            message: "Auth Success",
+            token: token,
+          });
+        }
+        res.status(401).json({
+          message: "Auth Failed",
+          result: result,
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
 // Profile Update
 router.patch("/updateProfile/:profileID", (req, res, next) => {
   const id = req.params.profileID;
@@ -104,28 +218,27 @@ router.get("/assigned/:cardNumber", (req, res, next) => {
 
 // Fetch Payments for a User
 router.get("/payments/:userID", (req, res, next) => {
-    const userID = req.params.userID;
-  
-    BillingDetails.find({ userID: userID })
-      .exec()
-      .then((payments) => {
-        if (payments.length === 0) {
-          return res.status(404).json({
-            message: "No payments found for this user",
-          });
-        }
-        res.status(200).json({
-          message: "Payments found for this user",
-          payments: payments,
+  const userID = req.params.userID;
+
+  BillingDetails.find({ userID: userID })
+    .exec()
+    .then((payments) => {
+      if (payments.length === 0) {
+        return res.status(404).json({
+          message: "No payments found for this user",
         });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({
-          error: err,
-        });
+      }
+      res.status(200).json({
+        message: "Payments found for this user",
+        payments: payments,
       });
-  });
-  
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
 
 module.exports = router;
