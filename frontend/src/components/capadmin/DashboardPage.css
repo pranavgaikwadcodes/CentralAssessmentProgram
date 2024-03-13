@@ -1,0 +1,9 @@
+.card{
+    border-radius: 30px;
+}
+.register-college-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -100px;
+}
