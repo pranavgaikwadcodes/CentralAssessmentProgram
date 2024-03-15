@@ -5,6 +5,7 @@ import './sidebar.css'
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import LaunchIcon from '@mui/icons-material/Launch';
+import { Link, NavLink } from 'react-router-dom';
 
 const SideBar = ({ children }) => {
   
@@ -49,25 +50,27 @@ const SideBar = ({ children }) => {
 export default SideBar
 
 const SidebarContext = createContext()
-export function SideBarItem({ icon, text , active, alert }) {
+export function SideBarItem({ icon, text , active, alert, to }) {
   const {expanded} = useContext(SidebarContext)
   return (
-    <li className={`text-white relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group
-    ${
-      active ? "bg-gray from-gray to-secondary text-white"
-      : "text-white"
-    }
-    `}>
-      <span className={`menu-icons `} >
-        {icon}
-      </span>
-      <span className={`font-inter overflow-hidden transition-all ${expanded? "w-52 ml-3" : "w-0"}`}>{text}</span>
+    <NavLink to={to}>
+      <li className={`text-white relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group
+      ${
+        active ? "bg-gray from-gray to-secondary text-white"
+        : "text-white"
+      }
+      `}>
+        <span className={`menu-icons `} >
+          {icon}
+        </span>
+        <span className={`font-inter overflow-hidden transition-all ${expanded? "w-52 ml-3" : "w-0"}`}>{text}</span>
 
-      {!expanded && <div className={` font-inter absolute left-full rounded-md px-2 py-1 ml-6
-       bg-secondary-light text-secondary
-       invisible opacity-20 -translate-x-3 transition-all
-       group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-       `}>{text}</div>}
-    </li>
+        {!expanded && <div className={` font-inter absolute left-full rounded-md px-2 py-1 ml-6
+        bg-secondary-light text-secondary
+        invisible opacity-20 -translate-x-3 transition-all
+        group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+        `}>{text}</div>}
+      </li>    
+    </NavLink>
   )
 }

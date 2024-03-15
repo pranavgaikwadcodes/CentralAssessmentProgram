@@ -1,8 +1,10 @@
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import { Outlet } from 'react-router-dom';
 
 const DashboardPage = () => {
   return (
+    <>
     <div className='m-10 mr-20 content flex flex-col'>
 
       <div className="header flex justify-between items-center">
@@ -22,6 +24,8 @@ const DashboardPage = () => {
       </div>
 
     </div>
+    <Outlet/>
+    </>
   );
 };
 
