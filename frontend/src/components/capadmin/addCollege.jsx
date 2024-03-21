@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './DashboardPage.css';
 import FormInputs from '../formInputs/formInputs';
-import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Outlet } from 'react-router-dom';
 
 const AddCollege = () => {
@@ -54,13 +54,12 @@ const AddCollege = () => {
   console.log(values);
 
   return (
-    <>
       <div className='m-10 mr-20 content flex flex-col'>
 
         <div className="header flex justify-between items-center">
           <span className={`font-inter font-semibold text-4xl mr-96`}>ADD NEW COLLEGE</span>
           <button className={`bg-button-blue rounded-md pl-3 pr-3 pt-2 pb-2 text-white font-inter font-semibold flex items-center hover:bg-button-blue-hover`}>
-            <AddIcon sx={{ fontSize: 18 }} />
+            <ArrowBackIosIcon sx={{ fontSize: 18 }} />
             <span className="ml-2">Back</span>
           </button>
         </div>
@@ -80,13 +79,10 @@ const AddCollege = () => {
               bg-button-blue hover:bg-button-blue-hover mt-5 w-full'>Submit</button>
               </form>
               
-              
           </div>
         </div>
 
       </div>
-      <Outlet/>
-    </>
   )
 }
 

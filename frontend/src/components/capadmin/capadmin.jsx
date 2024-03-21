@@ -2,14 +2,16 @@ import React from 'react';
 import SideBar, { SideBarItem } from '../sidebar/sidebar';
 import Dashboard from './dashboard';
 import AddCollege from './addCollege';
-import Settings from './settings'; // Import the Settings component
-import { Outlet, Route, Routes } from 'react-router-dom';
+import Settings from './settings';
+import LoginPage from './login';
+import { Route, Routes } from 'react-router-dom';
 import ErrorPage from '../../404'; // Ensure correct path to your ErrorPage component
 
 // icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import TuneIcon from '@mui/icons-material/Tune';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const CAPadminPage = () => {
   return (
@@ -34,6 +36,12 @@ const CAPadminPage = () => {
             alert
             to="../CAPADMIN/settings"
           />
+          <SideBarItem 
+            icon={<LogoutIcon />}
+            text="Logout"
+            alert
+            to="../"
+          />
         </SideBar>
       </div>
         
@@ -43,6 +51,7 @@ const CAPadminPage = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/addCollege" element={<AddCollege />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
