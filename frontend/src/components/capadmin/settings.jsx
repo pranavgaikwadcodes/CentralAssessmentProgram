@@ -14,8 +14,8 @@ const SettingsPage = () => {
       id:1,
       name: "username",
       type: "text",
-      placeholder: "College Username",
-      lable: "College Username",
+      placeholder: "Username",
+      lable: "Username",
     },
     {
       id:2,
