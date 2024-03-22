@@ -15,8 +15,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const CAPadminPage = () => {
   return (
-    <div className='grid grid-rows-3 grid-flow-col'>
-      <div className='flex row-span-3'>
+    <div className='grid grid-cols-3 gap-0 min-h-screen'>
+      <div className='fixed h-full'>
         <SideBar>
           <SideBarItem  
             icon={<DashboardIcon />}
@@ -45,7 +45,7 @@ const CAPadminPage = () => {
         </SideBar>
       </div>
         
-      <div className='page row-span-3 col-span-3'>
+      <div className='col-span-3 overflow-auto pl-96'>
 
         <Routes>
             <Route path="/dashboard" element={<Dashboard />} />

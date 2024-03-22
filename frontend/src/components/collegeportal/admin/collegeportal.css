@@ -1,0 +1,12 @@
+.card{
+    border-radius: 30px;
+}
+.profile-settings-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page{
+    scroll-behavior: smooth;
+}
