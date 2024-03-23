@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 
 const adminRoutes = require("./api/routes/admin");
 
-mongoose.connect("mongodb://localhost:27017/CentralAssessmentProgram");
+// mongoose.connect("mongodb://localhost:27017/CentralAssessmentProgram");
+mongoose.connect("mongodb+srv://pranavjigaikwad:pranavjigaikwad@cap-cluster.ru9kg8c.mongodb.net/?retryWrites=true&w=majority&appName=CAP-Cluster");
 
 app.use(morgan("dev"));
 

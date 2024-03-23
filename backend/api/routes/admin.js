@@ -60,7 +60,7 @@ router.post("/loginAdmin", (req, res, next) => {
 });
 
 // Admin Related Routes
-router.get("/",checkAuth , (req, res, next) => {
+router.get("/", (req, res, next) => {
   AdminDetails.find()
     .exec()
     .then((results) => {
@@ -81,7 +81,7 @@ router.get("/",checkAuth , (req, res, next) => {
     });
 });
 
-router.patch("/updateAdminAuth/:id",checkAuth , (req, res, next) => {
+router.patch("/updateAdminAuth/:id", (req, res, next) => {
   const id = req.params.id;
   const updateOps = {};
 
@@ -116,7 +116,7 @@ router.patch("/updateAdminAuth/:id",checkAuth , (req, res, next) => {
 // ============================================== //
 
 // College Related Routes
-router.post("/addCollege/",checkAuth , (req, res, next) => {
+router.post("/addCollege/", (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     if (err) {
       return res.status(500).json({
@@ -154,7 +154,7 @@ router.post("/addCollege/",checkAuth , (req, res, next) => {
   });
 });
 
-router.get("/colleges/",checkAuth , (req, res, next) => {
+router.get("/colleges/", (req, res, next) => {
   CollegeDetails.find()
     .exec()
     .then((results) => {
@@ -174,7 +174,7 @@ router.get("/colleges/",checkAuth , (req, res, next) => {
     });
 });
 
-router.get("/colleges/:collegeID",checkAuth , (req, res, next) => {
+router.get("/colleges/:collegeID", (req, res, next) => {
   const id = req.params.collegeID;
   CollegeDetails.findById(id)
     .exec()
@@ -197,7 +197,7 @@ router.get("/colleges/:collegeID",checkAuth , (req, res, next) => {
     });
 });
 
-router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
+router.patch("/updateCollege/:collegeID", (req, res, next) => {
   const id = req.params.collegeID;
   const updateOps = {};
 
@@ -226,7 +226,7 @@ router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
     });
 });
 
-router.delete("/deleteCollege/:collegeID",checkAuth , (req, res, next) => {
+router.delete("/deleteCollege/:collegeID", (req, res, next) => {
   const id = req.params.collegeID;
   CollegeDetails.deleteOne({ _id: id })
     .exec()
