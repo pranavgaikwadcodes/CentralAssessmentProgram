@@ -378,6 +378,32 @@ router.patch("/updateSubject/:subjectID", (req, res, next) => {
     });
 })
 
+// Fetch Subjects by Department Name
+router.get("/subjects/:departmentName", (req, res, next) => {
+  const departmentName = req.params.departmentName;
+
+  SubjectDetails.find({ department: departmentName })
+    .exec()
+    .then((subjects) => {
+      if (subjects.length === 0) {
+        return res.status(404).json({
+          message: `No subjects found for department '${departmentName}'.`,
+        });
+      }
+      res.status(200).json({
+        message: `Subjects found for department '${departmentName}':`,
+        subjects: subjects,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
+
 // =================================================== //
 // Add Bundle
 router.post("/addBundle", (req, res, next) => {
