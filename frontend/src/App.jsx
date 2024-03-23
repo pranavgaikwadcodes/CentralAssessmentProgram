@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { Route, Routes } from 'react-router-dom';
 
+// Initial Page
+import InitialSelectPage from './initialSelectPage';
+
 // CAP ADMIN PAGES
 import CAPadminPage from './components/capadmin/capadmin';
 import DashboardPage from './components/capadmin/dashboard';
@@ -25,7 +28,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={ <div>LOGIN PAGE</div> } />
+        <Route path='/' element={ <InitialSelectPage/> } />
         
         {/* CAP ADMIN ROUTES */}
         <Route path='/adminlogin' element={ <LoginPage/> } />

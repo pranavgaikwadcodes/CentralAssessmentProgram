@@ -1,6 +1,6 @@
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 const DashboardPage = () => {
   return (
@@ -9,10 +9,12 @@ const DashboardPage = () => {
 
       <div className="header flex justify-between items-center">
         <span className={`font-inter font-semibold text-4xl mr-96`}>CAP Admin Dashboard</span>
-        <button className={`bg-button-blue rounded-md pl-3 pr-3 pt-2 pb-2 text-white font-inter font-semibold flex items-center hover:bg-button-blue-hover`}>
-          <AddIcon sx={{ fontSize: 18 }} />
-          <span className="ml-2">Add College</span>
-        </button>
+        <NavLink to="/CAPADMIN/addCollege">
+          <button className={`bg-button-blue rounded-md pl-3 pr-3 pt-2 pb-2 text-white font-inter font-semibold flex items-center hover:bg-button-blue-hover`}>
+            <AddIcon sx={{ fontSize: 18 }} />
+            <span className="ml-2">Add College</span>
+          </button>
+        </NavLink>
       </div>
       
       <div className="body">
