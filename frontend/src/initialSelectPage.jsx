@@ -20,7 +20,7 @@ const InitialSelectPage = () => {
             </div>
           </NavLink>
 
-          <NavLink to="CollegePortal/dashboard">
+          <NavLink to="DepartmentPortal/dashboard">
             <div className="bg-orange-400 text-white p-10 rounded-md text-center font-inter text-xl font-semibold hover:bg-orange-500 transition duration-300 ease-in-out">
                 DEPARTMENT PORTAL
             </div>
