@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const departmentDetailsSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
+  college_code: {type: String, require: true},
   name: { type: String, require: true },
   branches: {type: String, require: true},
   hod: {type: String, require: true},

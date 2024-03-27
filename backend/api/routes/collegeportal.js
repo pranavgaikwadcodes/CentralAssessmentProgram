@@ -65,7 +65,7 @@ router.post("/loginCollege", (req, res, next) => {
 
 // =================================================== //
 // Fetch College Details
-router.get("/collegeDetails/",checkAuth , (req, res, next) => {
+router.get("/collegeDetails/" , (req, res, next) => {
   CollegeDetails.find()
     .exec()
     .then((results) => {
@@ -85,8 +85,32 @@ router.get("/collegeDetails/",checkAuth , (req, res, next) => {
     });
 });
 
+// Fetch College Details by ID
+router.get("/collegeDetails/:id", (req, res, next) => {
+  const collegeId = req.params.id; // Get college ID from request parameters
+
+  CollegeDetails.findById(collegeId) // Find college details by ID
+    .exec()
+    .then((college) => {
+      if (!college) {
+        return res.status(404).json({
+          error: "College not found",
+        });
+      } else {
+        res.status(200).json(college);
+      }
+    })
+    .catch((error) => {
+      console.log("Error in Fetching College Data from Database:", error);
+      res.status(500).json({
+        error: "Internal server error",
+      });
+    });
+});
+
+
 // update college info
-router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
+router.patch("/updateCollege/:collegeID", (req, res, next) => {
   const id = req.params.collegeID;
   const updateOps = {};
 
@@ -117,7 +141,7 @@ router.patch("/updateCollege/:collegeID",checkAuth , (req, res, next) => {
 
 // =================================================== //
 // add new department
-router.post("/addDepartment/",checkAuth , (req, res, next) => {
+router.post("/addDepartment/", (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     if (err) {
       return res.status(500).json({
@@ -127,6 +151,7 @@ router.post("/addDepartment/",checkAuth , (req, res, next) => {
 
     const departmentDetails = new DepartmentDetails({
       _id: new mongoose.Types.ObjectId(),
+      college_code: req.body.college_code,
       name: req.body.name,
       branches: req.body.branches,
       hod: req.body.hod,
@@ -168,7 +193,7 @@ router.post("/addDepartment/",checkAuth , (req, res, next) => {
 });
 
 // fetch all departments
-router.get("/departments/",checkAuth , (req, res, next) => {
+router.get("/departments/", (req, res, next) => {
   DepartmentDetails.find()
     .exec()
     .then((results) => {
@@ -189,7 +214,7 @@ router.get("/departments/",checkAuth , (req, res, next) => {
 });
 
 // update dept info
-router.patch("/updateDepartment/:deptID",checkAuth , (req, res, next) => {
+router.patch("/updateDepartment/:deptID", (req, res, next) => {
   const id = req.params.deptID;
   const updateOps = {};
 
@@ -221,7 +246,7 @@ router.patch("/updateDepartment/:deptID",checkAuth , (req, res, next) => {
 
 // =================================================== //
 // Add Billing Data
-router.post("/addBillingData",checkAuth , (req, res, next) => {
+router.post("/addBillingData", (req, res, next) => {
   const billingDetails = new BillingDetails({
     _id: new mongoose.Types.ObjectId(),
     userID: req.body.userID,
@@ -251,7 +276,7 @@ router.post("/addBillingData",checkAuth , (req, res, next) => {
 })
 
 // Fetch Billing Data
-router.get("/billing",checkAuth , (req, res, next) => {
+router.get("/billing", (req, res, next) => {
   BillingDetails.find()
     .exec()
     .then((results) => {

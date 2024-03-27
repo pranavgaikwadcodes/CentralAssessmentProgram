@@ -2,14 +2,15 @@ import React from 'react';
 import './formInput.css';
 
 const FormInputs = (props) => {
-    const {id, lable, onChange, width, isdisabled, ...inputProps} = props
-    const disabledAttribute = props.disabled ? { disabled: true } : {};
+  const { id, label, onChange, width, isDisabled, value, ...inputProps } = props;
+  const disabledAttribute = isDisabled ? { disabled: true } : {};
+  
   return (
     <div className={`formInputs ${width}`}>
-        {/* <label htmlFor="">{lable}</label> */}
-        <input {...inputProps} onChange={onChange} {...disabledAttribute} required/>
+      <label htmlFor={id}>{label}</label>
+      <input {...inputProps} onChange={onChange} value={value} {...disabledAttribute} required />
     </div>
-  )
-}
+  );
+};
 
-export default FormInputs
+export default FormInputs;

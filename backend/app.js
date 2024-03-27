@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const adminRoutes = require("./api/routes/admin");
+const collegePortalRoutes = require("./api/routes/collegeportal");
+const examinerPortalRoutes = require("./api/routes/examinersportal");
 
 mongoose.connect("mongodb://localhost:27017/CentralAssessmentProgram");
 // mongoose.connect("mongodb+srv://pranavjigaikwad:pranavjigaikwad@cap-cluster.ru9kg8c.mongodb.net/?retryWrites=true&w=majority&appName=CAP-Cluster");
@@ -31,6 +33,8 @@ app.use((req, res, next) => {
 
 // routes to handle requests
 app.use("/admin", adminRoutes);
+app.use("/collegePortal", collegePortalRoutes);
+app.use("/examinerPortal", examinerPortalRoutes);
 
 // handling errors in routes
 app.use((req, res, next) => {

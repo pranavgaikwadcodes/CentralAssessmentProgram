@@ -37,14 +37,14 @@ function App() {
         
         {/* CAP ADMIN ROUTES */}
         <Route path='/adminlogin' element={ <LoginPage/> } />
-        <Route path='CAPADMIN' element={ <CAPadminPage/> } >
+        <Route path='CAPADMIN/*' element={ <CAPadminPage/> } >
           <Route path='dashboard' element={ <DashboardPage/> } />
           <Route path='addCollege' element={ <AddCollege/> } />
           <Route path='settings' element={ <SettingsPage/> } />
         </Route>   
         
         {/* COLLEGE PORTAL ROUTES */}
-        <Route path='CollegePortal' element={ <CollegPortalPage/> } >
+        <Route path='CollegePortal/*' element={ <CollegPortalPage/> } >
           <Route path='dashboard' element={ <CollegePortalDashboard/> } />
           <Route path='deptManagement' element={ <AddCollege/> } />
           <Route path='billing' element={ <SettingsPage/> } />
@@ -55,7 +55,7 @@ function App() {
         </Route>
 
         {/* DEPARTMENT PORTAL ROUTES */}
-        <Route path='DepartmentPortal' element={ <DepartmentPortalPage/> } >
+        <Route path='DepartmentPortal/*' element={ <DepartmentPortalPage/> } >
           <Route path='dashboard' element={ <CollegePortalDashboard/> } />
           <Route path='subjects' element={ <SubjectsPage/> } />
           <Route path='addSubject' element={ <AddSubjectPage/> } />
