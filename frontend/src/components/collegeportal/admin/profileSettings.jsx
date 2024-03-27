@@ -8,18 +8,18 @@ import axios from 'axios'; // Import axios for making HTTP requests
 
 const ProfileSettingsPage = () => {
   const [values, setValues] = useState({
-    collegeName:"",
-    centerID:"",
-    phoneNumber:"",
-    totalDepartmentsCount:"",
-    email:"",
+    collegeName: "",
+    centerID: "",
+    phoneNumber: "",
+    totalDepartmentsCount: "",
+    email: "",
     collegeType: "Affiliated to SPPU", // Default value
   });
 
   useEffect(() => {
     // const collegeId = localStorage.getItem('collegeId'); // Retrieve college ID from localStorage
     // if (collegeId) {
-      fetchCollegeDetails('65ff10fee8c642085f6b699d');
+    fetchCollegeDetails('65ff10fee8c642085f6b699d');
     // }
   }, []);
 
@@ -109,11 +109,11 @@ const ProfileSettingsPage = () => {
           <span className="ml-2">Back</span>
         </button>
       </div>
-      
+
       <div className="body profile-settings-form flex flex-col">
         <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-32 ">
           <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill for set your profile</div>
-          
+
           <form onSubmit={handleSubmit}>
             {inputs.map(input => (
               <FormInputs
@@ -126,7 +126,7 @@ const ProfileSettingsPage = () => {
                 onChange={onChange}
               />
             ))}
-            
+
             <div className='mt-5'>
               <span>Select College Type</span>
               {radioButtons.map((radioGroup) => (
@@ -138,7 +138,7 @@ const ProfileSettingsPage = () => {
                         className="form-radio h-5 w-5 text-blue-600"
                         name={radioGroup.name}
                         value={option.value}
-                        checked={values[radioGroup.name] === option.value}
+                        checked={values.collegeType === option.value}
                         onChange={onChange}
                       />
                       <span className="ml-2">{option.label}</span>
