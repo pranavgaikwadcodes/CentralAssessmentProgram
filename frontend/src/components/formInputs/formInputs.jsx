@@ -7,7 +7,7 @@ const FormInputs = (props) => {
   return (
     <div className={`formInputs ${width}`}>
         {/* <label htmlFor="">{lable}</label> */}
-        <input {...inputProps} onChange={onChange} {...disabledAttribute}/>
+        <input {...inputProps} onChange={onChange} {...disabledAttribute} required/>
     </div>
   )
 }

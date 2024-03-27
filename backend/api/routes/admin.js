@@ -43,6 +43,7 @@ router.post("/loginAdmin", (req, res, next) => {
           return res.status(200).json({
             message: "Auth Success",
             token: token,
+            adminID: admin._id
           });
         }
         res.status(401).json({
@@ -80,19 +81,19 @@ router.get("/", (req, res, next) => {
       });
     });
 });
-
 router.patch("/updateAdminAuth/:id", (req, res, next) => {
   const id = req.params.id;
   const updateOps = {};
 
-  for (const ops of req.body) {
+  // Assuming req.body is an object containing key-value pairs to be updated
+  for (const key in req.body) {
     // Check if the field being updated is the password
-    if (ops.propName === "password") {
+    if (key === "password") {
       // Hash the new password before updating
-      const hashedPassword = bcrypt.hashSync(ops.value, 10); // Hash the password with a salt round of 10
-      updateOps[ops.propName] = hashedPassword;
+      const hashedPassword = bcrypt.hashSync(req.body[key], 10); // Hash the password with a salt round of 10
+      updateOps[key] = hashedPassword;
     } else {
-      updateOps[ops.propName] = ops.value;
+      updateOps[key] = req.body[key];
     }
   }
 
@@ -112,6 +113,7 @@ router.patch("/updateAdminAuth/:id", (req, res, next) => {
       });
     });
 });
+
 
 // ============================================== //
 
