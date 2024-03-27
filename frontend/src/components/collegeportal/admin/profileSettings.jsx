@@ -111,7 +111,7 @@ const ProfileSettingsPage = () => {
       </div>
 
       <div className="body profile-settings-form flex flex-col">
-        <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-32 ">
+        <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-10 ">
           <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill for set your profile</div>
 
           <form onSubmit={handleSubmit}>
