@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import './DashboardPage.css';
 import FormInputs from '../formInputs/formInputs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Outlet } from 'react-router-dom';
 import axios from 'axios';
+import PopUpModal from '../popUp/popUpModal';
 
 const AddCollege = () => {
+
+  // Used for pop up 
+  const [openModel, setOpenModel] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [message, setMessage] = useState('');
+  const formRef = useRef(null); // Reference to the form element
+
   const [values, setValues] = useState({
     name: "",
     center_code: "",
@@ -83,15 +90,35 @@ const AddCollege = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // Make Axios POST request
     axios.post('http://localhost:5000/admin/addCollege/', values)
       .then(response => {
         console.log(response.data);
-        // Handle success response here
+        setMessage('College added successfully!'); // Set the success message
+        setIsSuccess(true); // Set isSuccess to true
+        setOpenModel(true); // Open the modal upon successful college addition
+        // Delay form reset until after state updates
+        setTimeout(() => {
+          formRef.current.reset();
+        }, 0);
+        // Reset all input fields
+        setValues({
+          name: "",
+          center_code: "",
+          college_type: "Affiliated to SPPU",
+          college_departments_count: "",
+          address: "",
+          contact: "",
+          email: "",
+          password: "",
+        });
       })
       .catch(error => {
         console.error('Error adding college:', error);
+        setMessage('Failed to add college. Please try again.'); // Set the error message
+        setIsSuccess(false); // Set isSuccess to false
+        setOpenModel(true); // Open the modal upon error
         // Handle error here
       });
   };
@@ -105,6 +132,14 @@ const AddCollege = () => {
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
+
+  const handleModalClose = () => {
+    setOpenModel(false);
+    if (isSuccess) {
+      // Reload the page when modal is closed and isSuccess is true
+      window.location.reload();
+    }
+  };
 
   console.log(values);
 
@@ -124,7 +159,7 @@ const AddCollege = () => {
           bg-white drop-shadow-2xl w-9/12 mt-10 ">
           <div className="heading font-inter text-xl font-normal mt-3 ml-2">Set Credentials</div>
 
-          <form onSubmit={handleSubmit}>
+          <form ref={formRef} onSubmit={handleSubmit}>
             {/* <FormInputs placeholder="College Username" setUsername={setUsername} /> */}
 
             {inputs.map((input) => (
@@ -159,6 +194,8 @@ const AddCollege = () => {
 
         </div>
       </div>
+
+      <PopUpModal open={openModel} onClose={ handleModalClose } isSuccess={isSuccess} message={message} />
 
     </div>
   )
