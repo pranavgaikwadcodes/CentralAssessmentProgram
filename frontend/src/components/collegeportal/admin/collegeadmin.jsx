@@ -62,6 +62,7 @@ const CollegeAdmin = () => {
                     <Route path="/addDepartment" element={<AddDepartmentPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/profileSettings" element={<ProfileSettingsPage />} />
+                    <Route path="/collegelogin" element={<ProfileSettingsPage />} />
                 </Routes>
             </div>
         </div>

@@ -47,6 +47,8 @@ router.post("/loginCollege", (req, res, next) => {
           return res.status(200).json({
             message: "Auth Success",
             token: token,
+            collegeID: collegeData._id,
+            collegeCODE: collegeData.center_code,
           });
         }
         res.status(401).json({
