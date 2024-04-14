@@ -1,7 +1,6 @@
 import React, { useState , useRef } from 'react'
 import './collegeportal.css';
 import FormInputs from '../../formInputs/formInputs';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { NavLink } from 'react-router-dom';
 import PopUpModal from '../../popUp/popUpModal';

@@ -65,6 +65,61 @@ router.post("/loginCollege", (req, res, next) => {
     });
 });
 
+// Department Login
+router.post("/loginDepartment", (req, res, next) => {
+  const { department_username, department_password } = req.body;
+  DepartmentDetails.findOne({ department_username })
+    .exec()
+    .then((departmentData) => {
+      if (!departmentData) {
+        return res.status(401).json({
+          message: "Auth Failed",
+        });
+      }
+      bcrypt.compare(department_password, departmentData.department_password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Auth Failed",
+          });
+        }
+        if (result) {
+          // If passwords match, generate JWT token
+          const token = jwt.sign(
+            {
+              department_username: departmentData.department_username,
+              departmentID: departmentData._id,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1h",
+            }
+          );
+          res.setHeader("Authorization", `Bearer ${token}`);
+          return res.status(200).json({
+            message: "Auth Success",
+            token: token,
+            departmentID: departmentData._id,
+            college_code: departmentData.college_code,
+            departmentName: departmentData.name,
+            // You can include other department data here if needed
+          });
+        }
+        res.status(401).json({
+          message: "Auth Failed",
+          result: result,
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
+
+
 // =================================================== //
 // Fetch College Details
 router.get("/collegeDetails/" , (req, res, next) => {
@@ -144,13 +199,15 @@ router.patch("/updateCollege/:collegeID", (req, res, next) => {
 // =================================================== //
 // add new department
 router.post("/addDepartment/", (req, res, next) => {
-  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+  // Hash the password
+  bcrypt.hash(req.body.department_password, 10, (err, hashedPassword) => {
     if (err) {
       return res.status(500).json({
         error: err,
       });
     }
 
+    // Create a new DepartmentDetails instance with hashed password
     const departmentDetails = new DepartmentDetails({
       _id: new mongoose.Types.ObjectId(),
       college_code: req.body.college_code,
@@ -159,23 +216,20 @@ router.post("/addDepartment/", (req, res, next) => {
       hod: req.body.hod,
       hod_email: req.body.hod_email,
       hod_contact: req.body.hod_contact,
-      
       student_count_firstyear: req.body.student_count_firstyear,
       student_count_secondyear: req.body.student_count_secondyear,
       student_count_thirdyear: req.body.student_count_thirdyear,
       student_count_fourthyear: req.body.student_count_fourthyear,
-      
       subject_count_firstyear: req.body.subject_count_firstyear,
       subject_count_secondyear: req.body.subject_count_secondyear,
       subject_count_thirdyear: req.body.subject_count_thirdyear,
       subject_count_fourthyear: req.body.subject_count_fourthyear,
-
       teachers_count: req.body.teachers_count,
-
       department_username: req.body.department_username,
-      department_password: req.body.department_password,
+      department_password: hashedPassword, // Use hashed password
     });
 
+    // Save the department details
     departmentDetails
       .save()
       .then((result) => {
@@ -307,6 +361,8 @@ router.post("/addTeacher", (req, res, next) => {
     designation: req.body.designation,
     college_email: req.body.college_email,
     contact: req.body.contact,
+    college_code: req.body.college_code,
+    department: req.body.department,
   });
 
   teacherDetails

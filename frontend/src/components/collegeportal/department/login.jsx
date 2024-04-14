@@ -31,21 +31,27 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/collegePortal/loginCollege", values);
-      const { token, collegeID } = response.data;
+      const response = await axios.post("http://localhost:5000/collegePortal/loginDepartment", {
+        department_username: values.username,
+        department_password: values.password,
+      });
+      const { token, departmentID, college_code, departmentName } = response.data;
       console.log(response.data);
-
-      // Store the token and adminID in local storage
+  
+      // Store the token, departmentID, and college_code in local storage
       localStorage.setItem("token", token);
-      localStorage.setItem("collegeID", collegeID);
-
+      localStorage.setItem("departmentID", departmentID);
+      localStorage.setItem("college_code", college_code);
+      localStorage.setItem("departmentName", departmentName);
+  
       // Redirect to dashboard or any other desired page
-      navigate("/collegePortal/dashboard");
+      navigate("/DepartmentPortal/dashboard");
     } catch (error) {
       console.error('Error during login:', error);
       // Handle login error, show an error message or perform any other actions you need
     }
   };
+  
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -56,7 +62,7 @@ const LoginPage = () => {
   return (
     <div className='m-10 mr-20 content flex flex-col'>
       <div className="header flex justify-between items-center">
-        <span className={`font-inter font-semibold text-4xl mr-96`}>LOGIN TO CAP <span className="bg-yellow-300">COLLEGE PORTAL</span> </span>
+        <span className={`font-inter font-semibold text-4xl mr-96`}>LOGIN TO CAP <span className="bg-yellow-300">DEPARTMENT PORTAL</span> </span>
         <NavLink to="/">
           <button className={`bg-button-blue rounded-md pl-3 pr-3 pt-2 pb-2 text-white font-inter font-semibold flex items-center hover:bg-button-blue-hover`}>
             <ArrowBackIosIcon sx={{ fontSize: 18 }} />

@@ -2,8 +2,7 @@ import React from 'react';
 import SideBar, { SideBarItem } from '../../sidebar/sidebar';
 import { Route, Routes } from 'react-router-dom';
 import './collegeportal.css';
-
-import ErrorPage from '../../../404';
+ 
 import CollegePortalDashboard from './dashboard';
 import SettingsPage from './settings';
 import ProfileSettingsPage from './profileSettings';

@@ -1,9 +1,7 @@
 import React, { useState , useRef ,useEffect } from 'react';
 import './collegeportal.css';
 import FormInputs from '../../formInputs/formInputs';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import { NavLink } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'; 
 import axios from 'axios';
 import PopUpModal from '../../popUp/popUpModal';
 
@@ -49,8 +47,8 @@ const AddDepartmentPage = () => {
     subject_count_thirdyear: "",
     subject_count_fourthyear: "",
     teachers_count: "",
-    department_username: "", // Changed from "username"
-    department_password: "", // Changed from "password"
+    department_username: "", 
+    department_password: "", 
   });
   
   const inputs = [
@@ -169,7 +167,7 @@ const AddDepartmentPage = () => {
     axios.post('http://localhost:5000/collegePortal/addDepartment/', values)
       .then(response => {
         console.log(response.data);
-        setMessage('Auth Details Updated!'); // Set the success message
+        setMessage('Department Added!'); // Set the success message
         setIsSuccess(true); // Set isSuccess to true
         setOpenModel(true); // Open the modal upon successful college addition
         // Delay form reset until after state updates
@@ -179,7 +177,7 @@ const AddDepartmentPage = () => {
       })
       .catch(error => {
         console.error('Error adding department:', error);
-        setMessage('Failed to Update Auth Details. Please try again.'); // Set the error message
+        setMessage('Failed to Add Department. Please try again.'); // Set the error message
         setIsSuccess(false); // Set isSuccess to false
         setOpenModel(true); // Open the modal upon error
       });
@@ -189,10 +187,10 @@ const AddDepartmentPage = () => {
   const generateUsernameAndPassword = (e) => {
     e.preventDefault();
     const { hod, hod_contact } = values;
-    const username = hod.replace(/\s+/g, '').toLowerCase(); // Remove spaces and convert to lowercase
-    const lastDigits = hod_contact.slice(-4); // Extract last 4 digits of phone number
-    const password = username + lastDigits; // Combine username and last digits of phone number
-    setValues({ ...values, department_username: username, department_password:password });
+    const username = hod.replace(/\s+/g, '').toLowerCase();
+    const lastDigits = hod_contact.slice(-4);
+    const password = username + lastDigits;
+    setValues({ ...values, department_username: username, department_password: password });
   };
 
   const onChange = (e) => {
@@ -221,28 +219,29 @@ const AddDepartmentPage = () => {
                 Generate username & pass
               </button>
             </div>
-            <FormInputs
-              id={15}
-              label="Generated Username"
-              name="username"
-              type="text"
-              placeholder="Generated Username"
-              value={values.username}
-              onChange={onChange}
-              width="w-96"
-              isDisabled={true} // Disable the field
-            />
-            <FormInputs
-              id={16}
-              label="Generated Password"
-              name="password"
-              type="text"
-              placeholder="Generated Password"
-              value={values.password}
-              onChange={onChange}
-              width="w-96"
-              isDisabled={true} // Disable the field
-            />
+              <FormInputs
+                id={15}
+                label="Generated Username"
+                name="department_username"
+                type="text"
+                placeholder="Generated Username"
+                value={values.department_username}
+                onChange={onChange}
+                width="w-96"
+                isDisabled={true} // Disable the field
+              />
+              <FormInputs
+                id={16}
+                label="Generated Password"
+                name="department_password"
+                type="text"
+                placeholder="Generated Password"
+                value={values.department_password}
+                onChange={onChange}
+                width="w-96"
+                isDisabled={true} // Disable the field
+              />
+
             <button className='mt-12 font-inter font-semibold text-md rounded-lg px-4 py-2 text-white bg-button-blue hover:bg-button-blue-hover w-full'>
               SAVE DEPARTMENT
             </button>

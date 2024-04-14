@@ -24,6 +24,7 @@ import CollegePortalAddDepartmentPage from './components/collegeportal/admin/add
 import CollegePortalLoginPage from './components/collegeportal/admin/login';
 
 // Department Portal Pages
+import DepartmentLoginPage from './components/collegeportal/department/login';
 import DepartmentPortalPage from './components/collegeportal/department/departmentadmin';
 import SubjectsPage from './components/collegeportal/department/subjects';
 import AddSubjectPage from './components/collegeportal/department/addSubject';
@@ -57,6 +58,7 @@ function App() {
         </Route>
 
         {/* DEPARTMENT PORTAL ROUTES */}
+        <Route path='/departmentlogin' element={ <DepartmentLoginPage/> } />
         <Route path='DepartmentPortal/*' element={ <DepartmentPortalPage/> } >
           <Route path='dashboard' element={ <CollegePortalDashboard/> } />
           <Route path='subjects' element={ <SubjectsPage/> } />
