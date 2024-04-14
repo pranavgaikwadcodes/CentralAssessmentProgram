@@ -14,6 +14,8 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import AddSubjectPage from './addSubject';
+import TeachersPage from './teachers';
+import AddTeacherPage from './addTeacher';
 
 const CollegeAdmin = () => {
     return (
@@ -63,7 +65,9 @@ const CollegeAdmin = () => {
                 <Routes>
                     <Route path="/dashboard" element={<CollegePortalDashboard />} />
                     <Route path="/subjects" element={<SubjectsPage />} />                    
-                    <Route path="/addSubject" element={<AddSubjectPage />} />                    
+                    <Route path="/addSubject" element={<AddSubjectPage />} />
+                    <Route path="/teachers" element={<TeachersPage />} />
+                    <Route path="/addTeacher" element={<AddTeacherPage />} />
                 </Routes>
             </div>
         </div>
