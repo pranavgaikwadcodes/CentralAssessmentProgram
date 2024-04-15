@@ -13,7 +13,7 @@ const BillingDetails = require("../models/collegeportal/billing");
 const TeacherDetails = require("../models/collegeportal/teachers");
 const SubjectDetails = require("../models/collegeportal/subject");
 const BundleDetails = require("../models/collegeportal/bundle");
-const ExaminersDetails = require("../models/examinersportal/profile");
+const ExaminerProfileDetails = require("../models/examinersportal/profile");
 
 
 // LOGIN
@@ -412,6 +412,7 @@ router.patch("/updateTeacher/:teacherID", (req, res, next) => {
 router.post("/addSubject", (req, res, next) => {
   const subjectDetails = new SubjectDetails({
     _id: new mongoose.Types.ObjectId(),
+    collegeCode: req.body.collegeCode,
     department: req.body.department,
     subject_name: req.body.subject_name,
     subject_code: req.body.subject_code,
@@ -492,10 +493,12 @@ router.get("/subjects/:departmentName", (req, res, next) => {
 router.post("/addBundle", (req, res, next) => {
   const bundleDetails = new BundleDetails({
     _id: new mongoose.Types.ObjectId(),
+    collegeCode: req.body.collegeCode,
     department: req.body.department,
-    bundle_ID: req.body.bundle_ID,
     subject: req.body.subject,
+    subjectCode: req.body.subjectCode,
     pattern: req.body.pattern,
+    bundle_ID: req.body.bundle_ID,
     bundle_number: req.body.bundle_number,
     number_of_bundles_for_this_subject: req.body.number_of_bundles_for_this_subject,
     number_of_papers_in_bundle: req.body.number_of_papers_in_bundle,

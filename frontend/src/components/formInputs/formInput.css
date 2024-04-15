@@ -21,3 +21,37 @@ input:focus:not(:focus-visible),
 input:active:not(:focus-visible) {
     border-color: #ddd; /* Reverting border color for browsers that don't support :focus-visible */
 }
+
+
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* For DROP DOWN */
+/* Apply styles to the select element */
+select {
+    padding: 15px;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    appearance: none; /* Remove default styles (such as arrow) */
+    background-color: white; /* Ensure consistent background color */
+}
+
+/* Apply styles to the select element when focused */
+select:focus-visible {
+    border: 1px solid #888;
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(136, 136, 136, 0.5); /* Adding a box shadow for better focus indication */
+}
+
+/* Apply styles to the select element when active */
+select:focus,
+select:active {
+    border-color: #888;
+}
+
+/* Revert border color for browsers that don't support :focus-visible */
+select:focus:not(:focus-visible),
+select:active:not(:focus-visible) {
+    border-color: #ddd;
+}

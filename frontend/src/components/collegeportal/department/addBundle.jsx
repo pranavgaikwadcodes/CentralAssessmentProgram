@@ -3,7 +3,8 @@ import FormInputs from '../../formInputs/formInputs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import PopUpModal from '../../popUp/popUpModal';
+import PopUpModal from '../../popUp/popUpModal'; 
+
 
 const AddSubjectPage = () => {
 
@@ -13,11 +14,29 @@ const AddSubjectPage = () => {
   const [message, setMessage] = useState('');
   const formRef = useRef(null); // Reference to the form element
 
+  const [examiners, setExaminers] = useState([]); // State to hold examiners
+  const [selectedExaminer, setSelectedExaminer] = useState(''); // State to hold selected examiner UserID
+
   const handleModalClose = () => {
     setOpenModel(false);
     if (isSuccess) {
       // Reload the page when modal is closed and isSuccess is true
       window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    // Fetch examiners when component mounts
+    fetchExaminers('examiner'); // Provide the role value as needed
+  }, []);
+
+  // Function to fetch examiners based on role
+  const fetchExaminers = async (role) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/collegePortal/examiners/${role}`);
+      setExaminers(response.data.examiners);
+    } catch (error) {
+      console.error('Error fetching examiners:', error);
     }
   };
 
@@ -37,23 +56,28 @@ const AddSubjectPage = () => {
   const [values, setValues] = useState({
     collegeCode: "",
     department: "",
-    subject_name: "",
-    subject_code: "",
+    subject: "",
+    subjectCode: "",
     pattern: "",
     subject_type: "",
+    bundle_ID: "",
+    bundle_number: "",
+    number_of_bundles_for_this_subject: "",
+    number_of_papers_in_bundle: "",
+    assigned_to: "",
   })
 
   const inputs = [
     {
       id: 1,
-      name: "subject_name",
+      name: "subject",
       type: "text",
       placeholder: "Subject Name",
       label: "Subject Name",
     },
     {
       id: 2,
-      name: "subject_code",
+      name: "subjectCode",
       type: "text",
       placeholder: "subjectID / Subject Code",
       label: "subjectID / Subject Code",
@@ -65,14 +89,43 @@ const AddSubjectPage = () => {
       placeholder: "Pattern",
       label: "Pattern",
     },
+    {
+      id: 4,
+      name: "bundle_ID",
+      type: "text",
+      placeholder: "Bundle ID",
+      label: "Bundle ID",
+    },
+    {
+      id: 5,
+      name: "bundle_number",
+      type: "text",
+      placeholder: "Bundle Number",
+      label: "Bundle Number",
+    },
+    {
+      id: 6,
+      name: "number_of_bundles_for_this_subject",
+      type: "text",
+      placeholder: "number of bundles for this subject",
+      label: "number of bundles for this subject",
+    },
+    {
+      id: 6,
+      name: "number_of_papers_in_bundle",
+      type: "text",
+      placeholder: "number of papers in bundle",
+      label: "number of papers in bundle",
+    },
   ]
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/collegePortal/addSubject", values);
+      const updatedValues = { ...values, assigned_to: selectedExaminer }; // Update assigned_to field
+      const response = await axios.post("http://localhost:5000/collegePortal/addBundle", updatedValues);
       console.log(response.data);
-      setMessage('Subject Added!'); // Set the success message
+      setMessage('Bundle Added!'); // Set the success message
       setIsSuccess(true); // Set isSuccess to true
       setOpenModel(true); // Open the modal upon successful college addition
       // Delay form reset until after state updates
@@ -80,8 +133,8 @@ const AddSubjectPage = () => {
         formRef.current.reset();
       }, 0);
     } catch (error) {
-      console.error('Error adding Subject:', error);
-      setMessage('Failed to Add Subject. Please try again.'); // Set the error message
+      console.error('Error adding Bundle:', error);
+      setMessage('Failed to Add Bundle. Please try again.'); // Set the error message
       setIsSuccess(false); // Set isSuccess to false
       setOpenModel(true); // Open the modal upon error
     }
@@ -91,28 +144,14 @@ const AddSubjectPage = () => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
 
-
-  const radioButtons = [
-    {
-      id: 5,
-      name: "subject_type",
-      options: [
-        { label: "Practical", value: "Practical" },
-        { label: "Theory", value: "Theory" },
-        { label: "Audit Cource", value: "Audit Cource" },
-        { label: "Elective", value: "Elective" },
-      ],
-    },
-  ];
-
   console.log(values);
 
   return (
     <div className='m-10 mr-20 content flex flex-col'>
 
       <div className="header flex justify-between items-center">
-        <span className={`font-inter font-semibold text-4xl mr-96`}>ADD NEW SUBJECT</span>
-        <NavLink to="../subjects">
+        <span className={`font-inter font-semibold text-4xl mr-96`}>ADD NEW BUNDLE</span>
+        <NavLink to="../bundles">
           <button className={`bg-button-blue rounded-md pl-3 pr-3 pt-2 pb-2 text-white font-inter font-semibold flex items-center hover:bg-button-blue-hover`}>
             <ArrowBackIosIcon sx={{ fontSize: 18 }} />
             <span className="ml-2">Back</span>
@@ -123,7 +162,7 @@ const AddSubjectPage = () => {
       <div className="body profile-settings-form flex flex-col">
         <div className="profile-settings-card card font-inter m-2 p-5
          bg-white drop-shadow-2xl w-full mt-14 ">
-          <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to add new Subject</div>
+          <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to add new BUNDLE</div>
 
           <form ref={formRef} onSubmit={handleSubmit}>
 
@@ -154,26 +193,21 @@ const AddSubjectPage = () => {
               <FormInputs key={input.id} {...input} values={values[input.name]} onChange={onChange} />
             ))}
 
-            <div className='mt-5'>
-              <span>Select Subject Type</span>
-
-              {radioButtons.map((radioGroup) => (
-                <div key={radioGroup.id} className="mt-2">
-                  {radioGroup.options.map((option) => (
-                    <label key={option.value} className="inline-flex items-center mr-6">
-                      <input
-                        type="radio"
-                        className="form-radio h-5 w-5 text-blue-600"
-                        name={radioGroup.name}
-                        value={option.value}
-                        checked={values[radioGroup.name] === option.value}
-                        onChange={onChange}
-                      />
-                      <span className="ml-2">{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              ))}
+            <div className="form-group">
+              <label htmlFor="examiner">Select Examiner:</label>
+              <select className="custom-dropdown"
+                id="assigned_to"
+                name="assigned_to"
+                value={selectedExaminer}
+                onChange={(e) => setSelectedExaminer(e.target.value)}
+              >
+                <option value="">Select an Examiner</option>
+                {examiners.map((examiner) => (
+                  <option key={examiner.userID} value={examiner.userID}>
+                    {`${examiner.name} - ${examiner.email}`}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <button className='mt-12 font-inter font-semibold text-md rounded-lg px-4 py-2 text-white 

@@ -30,13 +30,13 @@ const AddTeacherPage = () => {
     setValues(prevState => ({
       ...prevState,
       college_code: collegeCode, // Corrected from 'collegeCode'
-      departmentName: departmentName, // Corrected from 'departmentName'
+      department: departmentName, // Corrected from 'departmentName'
     }));
   }, []); 
 
   const [values, setValues] = useState({
     college_code: "",
-    departmentName: "", 
+    department: "", 
     name: "",
     designation: "",
     college_email: "",
@@ -113,7 +113,7 @@ const AddTeacherPage = () => {
       </div>
 
       <div className="body profile-settings-form flex flex-col">
-        <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-32 ">
+        <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-14 ">
           <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to add new Teacher</div>
 
           <form ref={formRef} onSubmit={handleSubmit}>
@@ -131,10 +131,10 @@ const AddTeacherPage = () => {
               <FormInputs
                 id={16}
                 label="Department Name"
-                name="departmentName"
+                name="department"
                 type="text"
                 placeholder="Department Name"
-                value={values.departmentName}
+                value={values.department}
                 onChange={onChange}
                 width="w-96"
                 isDisabled={true} // Disable the field

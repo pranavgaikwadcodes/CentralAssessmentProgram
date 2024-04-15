@@ -16,6 +16,8 @@ import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import AddSubjectPage from './addSubject';
 import TeachersPage from './teachers';
 import AddTeacherPage from './addTeacher';
+import BundlesPage from './bundles';
+import AddBundlePage from './addBundle';
 
 const CollegeAdmin = () => {
     return (
@@ -47,12 +49,6 @@ const CollegeAdmin = () => {
                         to="../DepartmentPortal/bundles"
                     />
                     <SideBarItem 
-                        icon={<TuneIcon />}
-                        text="Settings"
-                        alert
-                        to="../DepartmentPortal/settings"
-                    />
-                    <SideBarItem 
                         icon={<LogoutIcon />}
                         text="Logout"
                         alert
@@ -68,6 +64,8 @@ const CollegeAdmin = () => {
                     <Route path="/addSubject" element={<AddSubjectPage />} />
                     <Route path="/teachers" element={<TeachersPage />} />
                     <Route path="/addTeacher" element={<AddTeacherPage />} />
+                    <Route path="/bundles" element={<BundlesPage />} />
+                    <Route path="/addBundle" element={<AddBundlePage />} />
                 </Routes>
             </div>
         </div>
