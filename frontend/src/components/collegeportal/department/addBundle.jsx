@@ -211,7 +211,7 @@ const AddSubjectPage = () => {
             </div>
 
             <button className='mt-12 font-inter font-semibold text-md rounded-lg px-4 py-2 text-white 
-               bg-button-blue hover:bg-button-blue-hover w-full'>SAVE SUBJECT</button>
+               bg-button-blue hover:bg-button-blue-hover w-full'>SAVE</button>
 
 
           </form>
