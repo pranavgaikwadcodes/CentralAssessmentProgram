@@ -61,7 +61,8 @@ router.post("/registerExaminer", (req, res, next) => {
       PAN_card_number: PAN_card_number,
       bank_IFSC_code: bank_IFSC_code,
       bank_account_number: bank_account_number,
-      UPI_id: UPI_id
+      UPI_id: UPI_id,
+      card_number: ""
     });
 
     newExaminer.save()
@@ -73,7 +74,8 @@ router.post("/registerExaminer", (req, res, next) => {
           examiner: {
             _id: result._id,
             name: result.name,
-            email: result.email
+            email: result.email,
+            userID: result.userID,
           }
         });
       })
@@ -117,6 +119,7 @@ router.post("/loginExaminer", (req, res, next) => {
           return res.status(200).json({
             message: "Auth Successsss",
             token: token,
+            userID: examiner.userID, // Include examiner ID
             examinerID: examiner._id, // Include examiner ID
             name: examiner.name, // Include examiner name
             email: examiner.email // Include examiner email
@@ -189,6 +192,15 @@ router.patch("/updateProfile/:profileID", (req, res, next) => {
 // add card
 router.post("/addCard", (req, res, next) => {
   // Generate a unique card number
+
+  const digits = '0123456789';
+  const cardNumberLength = 5;
+  let cardNumber = '';
+  for (let i = 0; i < cardNumberLength; i++) {
+    const randomIndex = Math.floor(Math.random() * digits.length);
+    cardNumber += digits[randomIndex];
+  }
+
   const card_number = uuid.v4(); // Generating a random UUID
 
   const cardDetails = new CardDetails({
@@ -198,7 +210,7 @@ router.post("/addCard", (req, res, next) => {
     name: req.body.name,
     role: req.body.role,
 
-    card_number: card_number, // Assigning the generated card number
+    card_number: cardNumber, // Assigning the generated card number
 
     subject_code: req.body.subject_code,
     bundle_number: req.body.bundle_number,
@@ -217,6 +229,46 @@ router.post("/addCard", (req, res, next) => {
         message: "Card Added To Database",
         Card_Details: cardDetails,
       });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
+// Fetch card by userID
+router.get("/card/:userID", (req, res, next) => {
+  const userID = req.params.userID;
+
+  // Find the card by userID
+  CardDetails.findOne({ userID: userID })
+    .exec()
+    .then((card) => {
+      if (card) {
+        res.status(200).json({
+          message: "Card found",
+          Card_Details: {
+            userID: card.userID,
+            email: card.email,
+            name: card.name,
+            role: card.role,
+            card_number: card.card_number,
+            subject_code: card.subject_code,
+            bundle_number: card.bundle_number,
+            number_of_papers_in_bundle: card.number_of_papers_in_bundle,
+            branch: card.branch,
+            card_issue_date_time: card.card_issue_date_time,
+            bundle_issue_date_time: card.bundle_issue_date_time,
+            bundle_status: card.bundle_status
+          },
+        });
+      } else {
+        res.status(404).json({
+          message: "Card not found",
+        });
+      }
     })
     .catch((err) => {
       console.log(err);

@@ -35,6 +35,7 @@ import ExaminerRegisterPage from './components/examinerportal/register';
 import ExaminerPortalPage from './components/examinerportal/examineradmin';
 import ExaminerDashboardPage from './components/examinerportal/dashboard';
 import ExaminerProfilePage from './components/examinerportal/profile';
+import IssueCardPage from './components/examinerportal/issueCard';
 
 import ErrorPage from './404';
 
@@ -78,6 +79,7 @@ function App() {
         <Route path='ExaminerPortal/*' element={ <ExaminerPortalPage/> } >
           <Route path='dashboard' element={ <ExaminerDashboardPage/> } />
           <Route path='profile' element={ <ExaminerProfilePage/> } />
+          <Route path='issueCard' element={ <IssueCardPage/> } />
         </Route>
 
         {/* ERROR ROUTE */}

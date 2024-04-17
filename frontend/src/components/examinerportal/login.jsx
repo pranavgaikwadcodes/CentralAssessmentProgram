@@ -33,7 +33,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:5000/examinerPortal/loginExaminer", values);
-      const { token, examinerID, name, email } = response.data;
+      const { token, examinerID, name, email, userID } = response.data;
       console.log(response.data);
 
       // Store the token and adminID in local storage
@@ -42,6 +42,7 @@ const LoginPage = () => {
       localStorage.setItem("examinerID", examinerID);
       localStorage.setItem("name", name);
       localStorage.setItem("email", email);
+      localStorage.setItem("userID", userID);
 
       // Redirect to dashboard or any other desired page
       navigate("/ExaminerPortal/dashboard");

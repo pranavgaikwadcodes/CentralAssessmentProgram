@@ -6,7 +6,8 @@ const examinerProfileDetailsSchema = mongoose.Schema({
   userID: { type: String, require: true }, // dynamically generated
   email: { type: String, require: true },
   password: { type: String, require: true },
-  
+  card_number: { type: String },
+    
   name: { type: String, require: true },
   phone: { type: String, require: true },
   college_name: { type: String, require: true },

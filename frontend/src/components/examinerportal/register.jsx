@@ -116,10 +116,11 @@ const RegisterPage = () => {
       console.log(response.data);
 
       // Save examiner details to localStorage
-      const { _id, name, email } = response.data.examiner;
+      const { _id, name, email, userID } = response.data.examiner;
       localStorage.setItem('examinerId', _id);
       localStorage.setItem('examinerName', name);
       localStorage.setItem('examinerEmail', email);
+      localStorage.setItem('userID', userID);
       
       // Redirect to dashboard or any other desired page
       navigate("/ExaminerPortal/dashboard");

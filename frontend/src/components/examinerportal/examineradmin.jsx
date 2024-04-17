@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import ExaminerDashboard from './dashboard';
 import ProfilePage from './profile';
-import CardPage from './profile';
+import IssueCardPage from './issueCard';
 
 
 // icons
@@ -37,7 +37,7 @@ const ExaminerAdmin = () => {
                         icon={<AssignmentIndIcon />}
                         text="Card"
                         alert
-                        to="../ExaminerPortal/card"
+                        to="../ExaminerPortal/issueCard"
                     />
                     <SideBarItem 
                         icon={<AccountBalanceWalletIcon />}
@@ -58,6 +58,7 @@ const ExaminerAdmin = () => {
                 <Routes>
                     <Route path="/dashboard" element={<ExaminerDashboard />} />
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/issueCard" element={<IssueCardPage />} />
                 </Routes>
             </div>
         </div>
