@@ -21,17 +21,17 @@ const CardPage = () => {
   }, []);
 
   return (
-    <div className="m-10 mr-20 content flex flex-col ">
+    <div className="m-10 mr-20 content flex flex-col w-96">
       
       <div className="body flex flex-col mt-4">
         {loading ? (
           <div className="text-center">Loading...</div>
         ) : cardDetails ? (
           <div className="card font-inter m-2 p-5 bg-green-100 drop-shadow-2xl">
-            <div className="heading text-xl font-semibold mb-4">Card Details</div>
+            <div className="heading text-xl font-extrabold mb-4">Card Details</div>
             <div className="details">
               {Object.entries(cardDetails).map(([key, value]) => (
-                <p key={key} className="text-lg">{key}: {value}</p>
+                <p key={key} className="text-lg font-medium">{key}: {value}</p>
               ))}
             </div>
           </div>
@@ -39,6 +39,7 @@ const CardPage = () => {
           <div className="text-center">Card not found</div>
         )}
       </div>
+
     </div>
   );
 };

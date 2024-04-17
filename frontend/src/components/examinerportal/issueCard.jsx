@@ -4,6 +4,7 @@ import FormInputs from '../formInputs/formInputs';
 import PopUpModal from '../popUp/popUpModal';
 import axios from 'axios';
 import CardPage from './card';
+import AssignedBundles from './assignedBundles';
 
 const IssueCardPage = () => {
   const [openModel, setOpenModel] = useState(false);
@@ -58,7 +59,11 @@ const IssueCardPage = () => {
         });
         // Check if the user has a card
         if (examinerData.card_number) {
+          setValues({
+            card_number: examinerData.cardNumber || "",
+          })
           setHasCard(true);
+
         }
       })
       .catch(error => {
@@ -76,7 +81,7 @@ const IssueCardPage = () => {
     const updatedValues = {
       ...values,
       card_issue_date_time: currentDate, // Corrected from card_issue_date to card_issue_date_time
-    };    
+    };
 
     // Send the Axios request to add the card
     axios.post(`http://localhost:5000/examinerPortal/addCard`, updatedValues)
@@ -158,8 +163,8 @@ const IssueCardPage = () => {
         <span className={`font-inter font-semibold text-4xl mr-96`}>ISSUE CARD</span>
       </div>
 
-      <div className="body profile-settings-form flex flex-col">
-        {!hasCard ? ( // Render the form if the user doesn't have a card
+      {!hasCard ? ( // Render the form if the user doesn't have a card
+        <div className="body profile-settings-form flex flex-col">
           <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-10 ">
             <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to issue card</div>
 
@@ -171,11 +176,14 @@ const IssueCardPage = () => {
               <button className='font-inter font-semibold text-md rounded-lg px-4 py-2 text-white bg-button-blue hover:bg-button-blue-hover mt-5 w-full'>Get Card</button>
             </form>
           </div>
-        ) : (
-          <CardPage /> // Render another component if the user has a card
-        )}
-      </div>
 
+        </div>
+      ) : (
+        <>
+          <CardPage />
+          <AssignedBundles cardNumber={localStorage.getItem('userID')} />
+        </>
+      )}
       <PopUpModal open={openModel} onClose={handleModalClose} isSuccess={isSuccess} message={message} />
     </div>
   );

@@ -261,7 +261,7 @@ router.get("/card/:userID", (req, res, next) => {
             branch: card.branch,
             card_issue_date_time: card.card_issue_date_time,
             bundle_issue_date_time: card.bundle_issue_date_time,
-            bundle_status: card.bundle_status
+            // bundle_status: card.bundle_status
           },
         });
       } else {
