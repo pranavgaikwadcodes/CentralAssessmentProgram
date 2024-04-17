@@ -29,6 +29,13 @@ import DepartmentPortalPage from './components/collegeportal/department/departme
 import SubjectsPage from './components/collegeportal/department/subjects';
 import AddSubjectPage from './components/collegeportal/department/addSubject';
 
+// Examiner Portal Pages
+import ExaminerLoginPage from './components/examinerportal/login';
+import ExaminerRegisterPage from './components/examinerportal/register';
+import ExaminerPortalPage from './components/examinerportal/examineradmin';
+import ExaminerDashboardPage from './components/examinerportal/dashboard';
+import ExaminerProfilePage from './components/examinerportal/profile';
+
 import ErrorPage from './404';
 
 function App() {
@@ -66,6 +73,12 @@ function App() {
         </Route>
 
         {/* EXAMINER PORTAL ROUTES */}
+        <Route path='/examinerlogin' element={ <ExaminerLoginPage/> } />
+        <Route path='/examinerregister' element={ <ExaminerRegisterPage/> } />
+        <Route path='ExaminerPortal/*' element={ <ExaminerPortalPage/> } >
+          <Route path='dashboard' element={ <ExaminerDashboardPage/> } />
+          <Route path='profile' element={ <ExaminerProfilePage/> } />
+        </Route>
 
         {/* ERROR ROUTE */}
         <Route path='*' element={ <ErrorPage /> } />

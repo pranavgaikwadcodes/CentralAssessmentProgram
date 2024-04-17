@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -47,7 +47,8 @@ router.post("/registerExaminer", (req, res, next) => {
     // Concatenate email prefix and random number to generate userID
     const userID = `${emailPrefix}${randomNumber}`;
 
-    const newExaminer = new ExaminerProfileDetails({
+    const newExaminer = new ProfileDetails({
+      _id: new mongoose.Types.ObjectId(), // Generate a new ObjectId for the _id field
       userID: userID,
       email: email,
       password: hashedPassword, // Save hashed password
@@ -68,7 +69,12 @@ router.post("/registerExaminer", (req, res, next) => {
         console.log(result);
         res.status(201).json({
           message: "Examiner registered successfully",
-          examiner: result
+          // examiner: result
+          examiner: {
+            _id: result._id,
+            name: result.name,
+            email: result.email
+          }
         });
       })
       .catch(err => {
@@ -82,24 +88,24 @@ router.post("/registerExaminer", (req, res, next) => {
 
 // Login
 router.post("/loginExaminer", (req, res, next) => {
-  ProfileDetails.findOne({ username: req.body.username })
+  ProfileDetails.findOne({ email: req.body.email })
     .exec()
     .then((examiner) => {
       if (!examiner) {
         return res.status(401).json({
-          message: "Auth Failed",
+          message: "Auth, Failed",
         });
       }
       bcrypt.compare(req.body.password, examiner.password, (err, result) => {
         if (err) {
           return res.status(401).json({
-            message: "Auth Failed",
+            message: "Auth # Failed",
           });
         }
         if (result) {
           const  token = jwt.sign(
             {
-              username: examiner.username,
+              email: examiner.email,
               userID: examiner._id,
             },
             process.env.JWT_SECRET,
@@ -109,14 +115,42 @@ router.post("/loginExaminer", (req, res, next) => {
           );
           res.setHeader('Authorization', `Bearer ${token}`);
           return res.status(200).json({
-            message: "Auth Success",
+            message: "Auth Successsss",
             token: token,
+            examinerID: examiner._id, // Include examiner ID
+            name: examiner.name, // Include examiner name
+            email: examiner.email // Include examiner email
           });
         }
         res.status(401).json({
-          message: "Auth Failed",
+          message: "Auth Failed dn",
           result: result,
         });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
+// Fetch Examiner by ID
+router.get("/examiner/:examinerID", (req, res, next) => {
+  const examinerID = req.params.examinerID;
+
+  ProfileDetails.findById(examinerID)
+    .exec()
+    .then((examiner) => {
+      if (!examiner) {
+        return res.status(404).json({
+          message: "Examiner not found",
+        });
+      }
+      res.status(200).json({
+        message: "Examiner found",
+        examiner: examiner,
       });
     })
     .catch((err) => {
