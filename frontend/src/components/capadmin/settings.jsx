@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './DashboardPage.css';
 import FormInputs from '../formInputs/formInputs';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import PopUpModal from '../popUp/popUpModal';
 
 const SettingsPage = () => {
+
+
+  // Used for pop up 
+  const [openModel, setOpenModel] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [message, setMessage] = useState('');
+  const formRef = useRef(null); // Reference to the form element
+
+
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -51,8 +60,8 @@ const SettingsPage = () => {
         setLoading(false); // Update loading state after fetching data
       });
   }, []); // Run this effect only once on component mount
-  
-  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,10 +77,27 @@ const SettingsPage = () => {
     try {
       const response = await axios.patch(`http://localhost:5000/admin/updateAdminAuth/${adminId}`, values);
       console.log(response.data); // Log the response from the server
-      // Handle success, show a success message or perform any other actions you need
+      setMessage('Updated successfully!'); // Set the success message
+      setIsSuccess(true); // Set isSuccess to true
+      setOpenModel(true); // Open the modal upon successful college addition
+      // Delay form reset until after state updates
+      setTimeout(() => {
+        formRef.current.reset();
+      }, 0);
     } catch (error) {
       console.error('Error updating admin:', error);
-      // Handle error, show an error message or perform any other actions you need
+      setMessage('Failed to updating admin. Please try again.'); // Set the error message
+      setIsSuccess(false); // Set isSuccess to false
+      setOpenModel(true); // Open the modal upon error
+    }
+  };
+
+  
+  const handleModalClose = () => {
+    setOpenModel(false);
+    if (isSuccess) {
+      // Reload the page when modal is closed and isSuccess is true
+      window.location.reload();
     }
   };
 
@@ -87,15 +113,12 @@ const SettingsPage = () => {
     <div className='m-10 mr-20 content flex flex-col'>
       <div className="header flex justify-between items-center">
         <span className={`font-inter font-semibold text-4xl mr-96`}>AUTH SETTINGS</span>
-        <button className={`bg-button-blue rounded-md pl-3 pr-3 pt-2 pb-2 text-white font-inter font-semibold flex items-center hover:bg-button-blue-hover`}>
-          <ArrowBackIosIcon sx={{ fontSize: 18 }} />
-          <span className="ml-2">Back</span>
-        </button>
+        
       </div>
       <div className="body register-college-form">
         <div className="register-college-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-96 mt-32 ">
           <div className="heading font-inter text-xl font-normal mt-3 ml-2">Make changes in</div>
-          <form onSubmit={handleSubmit}>
+          <form ref={formRef} onSubmit={handleSubmit}>
             {inputs.map((input) => (
               <FormInputs key={input.id} {...input} values={values[input.name]} onChange={onChange} />
             ))}
@@ -103,6 +126,9 @@ const SettingsPage = () => {
           </form>
         </div>
       </div>
+      
+      <PopUpModal open={openModel} onClose={ handleModalClose } isSuccess={isSuccess} message={message} />
+
     </div>
   );
 };
