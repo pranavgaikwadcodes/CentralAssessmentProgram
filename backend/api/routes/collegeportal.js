@@ -33,7 +33,7 @@ router.post("/loginCollege", (req, res, next) => {
           });
         }
         if (result) {
-          const  token = jwt.sign(
+          const token = jwt.sign(
             {
               username: collegeData.username,
               userID: collegeData._id,
@@ -122,7 +122,7 @@ router.post("/loginDepartment", (req, res, next) => {
 
 // =================================================== //
 // Fetch College Details
-router.get("/collegeDetails/" , (req, res, next) => {
+router.get("/collegeDetails/", (req, res, next) => {
   CollegeDetails.find()
     .exec()
     .then((results) => {
@@ -269,6 +269,30 @@ router.get("/departments/", (req, res, next) => {
     });
 });
 
+// fetch departments by college code
+router.get("/departments/:collegeCode", (req, res, next) => {
+  const collegeCode = req.params.collegeCode;
+
+  DepartmentDetails.find({ college_code: collegeCode })
+    .exec()
+    .then((results) => {
+      if (!results || results.length === 0) {
+        return res.status(404).json({
+          error: "No departments found for the provided college code",
+        });
+      } else {
+        res.status(200).json(results);
+      }
+    })
+    .catch((error) => {
+      console.log("Error in Fetching Departments from Database:", error);
+      res.status(500).json({
+        error: "Internal server error",
+      });
+    });
+});
+
+
 // update dept info
 router.patch("/updateDepartment/:deptID", (req, res, next) => {
   const id = req.params.deptID;
@@ -407,6 +431,33 @@ router.patch("/updateTeacher/:teacherID", (req, res, next) => {
     });
 })
 
+// Get Teachers by College Code and Department
+router.get("/teachers", (req, res, next) => {
+  const collegeCode = req.query.college_code;
+  const departmentName = req.query.department;
+
+  TeacherDetails.find({ college_code: collegeCode, department: departmentName })
+    .exec()
+    .then((teachers) => {
+      if (!teachers || teachers.length === 0) {
+        return res.status(404).json({
+          message: "No teachers found for the specified college code and department.",
+        });
+      }
+      res.status(200).json({
+        count: teachers.length,
+        teachers: teachers,
+      });
+    })
+    .catch((error) => {
+      console.log("Error in fetching teachers:", error);
+      res.status(500).json({
+        error: "Internal server error",
+      });
+    });
+});
+
+
 // =================================================== //
 // Add Subject
 router.post("/addSubject", (req, res, next) => {
@@ -421,7 +472,7 @@ router.post("/addSubject", (req, res, next) => {
   });
 
   subjectDetails
-  .save()
+    .save()
     .then((result) => {
       console.log(result);
       res.status(200).json({
@@ -463,19 +514,44 @@ router.patch("/updateSubject/:subjectID", (req, res, next) => {
 })
 
 // Fetch Subjects by Department Name
+// router.get("/subjects/:departmentName", (req, res, next) => {
+//   const departmentName = req.params.departmentName;
+
+//   SubjectDetails.find({ department: departmentName })
+//     .exec()
+//     .then((subjects) => {
+//       if (subjects.length === 0) {
+//         return res.status(404).json({
+//           message: `No subjects found for department '${departmentName}'.`,
+//         });
+//       }
+//       res.status(200).json({
+//         message: `Subjects found for department '${departmentName}':`,
+//         subjects: subjects,
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(500).json({
+//         error: err,
+//       });
+//     });
+// });
+// Fetch Subjects by Department Name and College Code
 router.get("/subjects/:departmentName", (req, res, next) => {
   const departmentName = req.params.departmentName;
+  const collegeCode = req.query.college_code;
 
-  SubjectDetails.find({ department: departmentName })
+  SubjectDetails.find({ department: departmentName, collegeCode: collegeCode })
     .exec()
     .then((subjects) => {
       if (subjects.length === 0) {
         return res.status(404).json({
-          message: `No subjects found for department '${departmentName}'.`,
+          message: `No subjects found for department '${departmentName}' and college code '${collegeCode}'.`,
         });
       }
       res.status(200).json({
-        message: `Subjects found for department '${departmentName}':`,
+        message: `Subjects found for department '${departmentName}' and college code '${collegeCode}':`,
         subjects: subjects,
       });
     })
@@ -507,7 +583,7 @@ router.post("/addBundle", (req, res, next) => {
   });
 
   bundleDetails
-  .save()
+    .save()
     .then((result) => {
       console.log(result);
       res.status(200).json({
@@ -547,6 +623,62 @@ router.patch("/updateBundle/:BundleID", (req, res, next) => {
       });
     });
 })
+
+router.patch("/updateBundleToAssign/:BundleID", (req, res, next) => {
+  const id = req.params.BundleID;
+  const updateOps = {};
+
+  for (const update of req.body) {
+    // Iterate over each update operation in req.body
+    for (const key in update) {
+      // Apply each key-value pair to the updateOps object
+      updateOps[key] = update[key];
+    }
+  }
+
+  BundleDetails.updateOne({ _id: id }, { $set: updateOps })
+    .exec()
+    .then((result) => {
+      res.status(200).json({
+        message: `Data updated successfully for the Bundle with ID ${id}`,
+        result: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
+
+// Fetch Bundle Data by College Code and Department
+router.get("/bundles", (req, res, next) => {
+  const collegeCode = req.query.college_code;
+  const department = req.query.department;
+
+  BundleDetails.find({ collegeCode: collegeCode, department: department })
+    .exec()
+    .then((bundles) => {
+      if (bundles.length === 0) {
+        return res.status(404).json({
+          message: `No bundles found for college code '${collegeCode}' and department '${department}'.`,
+        });
+      }
+      res.status(200).json({
+        message: `Bundles found for college code '${collegeCode}' and department '${department}':`,
+        bundles: bundles,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
 
 // Fetch Examiners Details by Role
 router.get("/examiners/:role", (req, res, next) => {
