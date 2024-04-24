@@ -358,29 +358,7 @@ router.post("/RequestPayment", (req, res, next) => {
       });
     });
 });
-
-// router.get("/examinerPaymentDetail/:userID", (req, res, next) => {
-//   const userID = req.params.userID;
-
-//   // Assuming ExaminerBillingDetails is your model for storing examiner details
-//   ExaminerBillingDetails.findOne({ userID: userID })
-//     .then((user) => {
-//       if (!user) {
-//         return res.status(404).json({ message: "user not found" });
-//       }
-//       // Check if payment status is "requested"
-//       if (user.payment_status === "requested") {
-//         return res.status(200).json({ message: "Requested Payment" });
-//       }
-//       // If payment status is not "requested", return user details
-//       res.status(200).json({ user });
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).json({ error: "Failed to fetch user details" });
-//     });
-// });
-
+ 
 router.get("/examinerPaymentDetail/:userID", (req, res, next) => {
   const userID = req.params.userID;
 
@@ -403,6 +381,60 @@ router.get("/examinerPaymentDetail/:userID", (req, res, next) => {
         error: err,
       });
     });
+}); 
+
+// Find payments with payment status requested
+router.get("/examinerRequestedPaymentDetail", (req, res, next) => {
+  ExaminerBillingDetails.find({ payment_status: 'requested' })
+    .exec()
+    .then((users) => {
+      if (!users || users.length === 0) {
+        return res.status(404).json({
+          message: "No users with requested payment status found",
+        });
+      }
+      res.status(200).json({
+        message: "Users found",
+        users: users,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
 });
+
+// Route to update a payment request by userID
+router.patch("/updatePaymentRequest/:userID", (req, res, next) => {
+  const userID = req.params.userID; // Extract userID from request parameters
+  const updateOps = {}; // Object to store update operations
+
+  // Loop through the request body to extract update operations
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value; // Add update operation to the updateOps object
+  }
+
+  // Update the payment request details in the database based on userID
+  ExaminerBillingDetails.updateOne({ userID: userID }, { $set: updateOps })
+    .exec()
+    .then((result) => {
+      // If successful, respond with a success message and the result of the update operation
+      res.status(200).json({
+        message: `Payment requests updated successfully for userID ${userID}`,
+        result: result,
+      });
+    })
+    .catch((err) => {
+      // If an error occurs during the update operation, log the error and respond with a 500 status code
+      console.error(err);
+      res.status(500).json({
+        error: "Failed to update payment requests",
+      });
+    });
+});
+
+
 
 module.exports = router;
