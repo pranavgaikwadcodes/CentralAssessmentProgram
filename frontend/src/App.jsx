@@ -21,6 +21,7 @@ import CollegePortalSettingsPage from './components/collegeportal/admin/settings
 import CollegePortalProfileSettingsPage from './components/collegeportal/admin/profileSettings';
 import CollegePortalDepartmentPage from './components/collegeportal/admin/department';
 import CollegePortalAddDepartmentPage from './components/collegeportal/admin/addDepartment';
+import CollegePortalBillingPage from './components/collegeportal/admin/billing';
 import CollegePortalLoginPage from './components/collegeportal/admin/login';
 
 // Department Portal Pages
@@ -36,6 +37,7 @@ import ExaminerPortalPage from './components/examinerportal/examineradmin';
 import ExaminerDashboardPage from './components/examinerportal/dashboard';
 import ExaminerProfilePage from './components/examinerportal/profile';
 import IssueCardPage from './components/examinerportal/issueCard';
+import PaymentPage from './components/examinerportal/payment';
 
 import ErrorPage from './404';
 
@@ -63,6 +65,7 @@ function App() {
           <Route path='profileSettings' element={ <CollegePortalProfileSettingsPage/> } />
           <Route path='department' element={ <CollegePortalDepartmentPage/> } />
           <Route path='addDepartment' element={ <CollegePortalAddDepartmentPage/> } />
+          <Route path='billing' element={ <CollegePortalBillingPage/> } />
         </Route>
 
         {/* DEPARTMENT PORTAL ROUTES */}
@@ -80,6 +83,7 @@ function App() {
           <Route path='dashboard' element={ <ExaminerDashboardPage/> } />
           <Route path='profile' element={ <ExaminerProfilePage/> } />
           <Route path='issueCard' element={ <IssueCardPage/> } />
+          <Route path='payment' element={ <PaymentPage/> } />
         </Route>
 
         {/* ERROR ROUTE */}

@@ -9,6 +9,7 @@ const uuid = require("uuid"); // for auto generation
 const checkAuth = require("../middleware/check-auth");
 
 const ProfileDetails = require("../models/examinersportal/profile");
+const ExaminerBillingDetails = require("../models/examinersportal/paymentdetails");
 const BillingDetails = require("../models/collegeportal/billing");
 const CardDetails = require("../models/examinersportal/card");
 const BundleDetails = require("../models/collegeportal/bundle");
@@ -317,6 +318,83 @@ router.get("/payments/:userID", (req, res, next) => {
       res.status(200).json({
         message: "Payments found for this user",
         payments: payments,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    });
+});
+
+// Route to request a payment
+router.post("/RequestPayment", (req, res, next) => { 
+  // Create a new payment instance with data from the request body
+  const newPayment = new ExaminerBillingDetails({
+    _id: new mongoose.Types.ObjectId(), // Generate a new ObjectId for the payment
+    userID: req.body.userID, // Extract userID from the request body
+    email: req.body.email, // Extract email from the request body
+    name: req.body.name, // Extract name from the request body
+    payment_status: "requested", // Set payment status to "requested"
+    reciever_upiID: req.body.reciever_upiID, // Extract receiver UPI ID from the request body
+  });
+
+  // Save the new payment details to the database
+  newPayment
+    .save()
+    .then((result) => {
+      // If successful, respond with a success message and the newly created payment
+      res.status(201).json({
+        message: "Payment requested successfully",
+        payment: result,
+      });
+    })
+    .catch((err) => {
+      // If an error occurs during saving, log the error and respond with a 500 status code
+      console.error(err);
+      res.status(500).json({
+        error: "Failed to request payment",
+      });
+    });
+});
+
+// router.get("/examinerPaymentDetail/:userID", (req, res, next) => {
+//   const userID = req.params.userID;
+
+//   // Assuming ExaminerBillingDetails is your model for storing examiner details
+//   ExaminerBillingDetails.findOne({ userID: userID })
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(404).json({ message: "user not found" });
+//       }
+//       // Check if payment status is "requested"
+//       if (user.payment_status === "requested") {
+//         return res.status(200).json({ message: "Requested Payment" });
+//       }
+//       // If payment status is not "requested", return user details
+//       res.status(200).json({ user });
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).json({ error: "Failed to fetch user details" });
+//     });
+// });
+
+router.get("/examinerPaymentDetail/:userID", (req, res, next) => {
+  const userID = req.params.userID;
+
+  ExaminerBillingDetails.findOne({ userID: userID })
+    .exec()
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          message: "user not found",
+        });
+      }
+      res.status(200).json({
+        message: "user found",
+        user: user,
       });
     })
     .catch((err) => {

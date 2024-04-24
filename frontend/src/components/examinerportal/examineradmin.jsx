@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import ExaminerDashboard from './dashboard';
 import ProfilePage from './profile';
 import IssueCardPage from './issueCard';
+import PaymentPage from './payment';
 
 
 // icons
@@ -59,6 +60,7 @@ const ExaminerAdmin = () => {
                     <Route path="/dashboard" element={<ExaminerDashboard />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/issueCard" element={<IssueCardPage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
                 </Routes>
             </div>
         </div>

@@ -9,6 +9,9 @@ const examinerPaymentDetailsSchema = mongoose.Schema({
   payment_method: {type: String,},
   transaction_id: {type: String,},
   transaction_day_date: {type: String,},
+
+  reciever_upiID:{type: String,},
+  amount:{type: String,},
 });
 
 module.exports = mongoose.model("examiner-payment-details", examinerPaymentDetailsSchema);

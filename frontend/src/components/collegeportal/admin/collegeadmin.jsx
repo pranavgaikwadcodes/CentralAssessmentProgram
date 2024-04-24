@@ -8,6 +8,7 @@ import SettingsPage from './settings';
 import ProfileSettingsPage from './profileSettings';
 import DepartmentPage from './department';
 import AddDepartmentPage from './addDepartment';
+import BillingPage from './billing';
 
 // icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -62,6 +63,7 @@ const CollegeAdmin = () => {
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/profileSettings" element={<ProfileSettingsPage />} />
                     <Route path="/collegelogin" element={<ProfileSettingsPage />} />
+                    <Route path="/billing" element={<BillingPage />} />
                 </Routes>
             </div>
         </div>
