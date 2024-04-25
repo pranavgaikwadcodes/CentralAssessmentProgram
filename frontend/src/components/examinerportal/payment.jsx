@@ -146,27 +146,53 @@ const PaymentPage = () => {
           <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-10 ">
             <p>You have already requested payment.</p>
           </div>
-        ) : (
-          <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-10 ">
-            <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to request payment</div>
+        ) : 
+          // <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-10 ">
+          //   <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to request payment</div>
 
-            <form ref={formRef} onSubmit={handleSubmit}>
-              {inputs.map(input => (
-                <FormInputs
-                  key={input.id}
-                  name={input.name}
-                  type={input.type}
-                  placeholder={input.placeholder}
-                  label={input.label}
-                  value={values[input.name]}
-                  onChange={onChange}
-                />
-              ))}
+          //   <form ref={formRef} onSubmit={handleSubmit}>
+          //     {inputs.map(input => (
+          //       <FormInputs
+          //         key={input.id}
+          //         name={input.name}
+          //         type={input.type}
+          //         placeholder={input.placeholder}
+          //         label={input.label}
+          //         value={values[input.name]}
+          //         onChange={onChange}
+          //       />
+          //     ))}
 
-              <button className='font-inter font-semibold text-md rounded-lg px-4 py-2 text-white bg-button-blue hover:bg-button-blue-hover mt-5 w-full'>Request</button>
-            </form>
-          </div>
-        )}
+          //     <button className='font-inter font-semibold text-md rounded-lg px-4 py-2 text-white bg-button-blue hover:bg-button-blue-hover mt-5 w-full'>Request</button>
+          //   </form>
+          // </div>
+
+          (paymentStatus === 'paid') ? (
+            <div className="profile-settings-card card font-inter m-2 p-5 bg-green-100 drop-shadow-2xl w-full mt-10 ">
+              <p>You have been Paid. <br></br><span>If you haven't received payment please wait for 24 hrs before taking any actions.</span><br></br><br></br> If you have any issues  please contact us at <span className='font-inter font-light text-blue-600'>support@capx.co.in</span></p>
+            </div>
+          ) : (
+            <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-10 ">
+              <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to request payment</div>
+  
+              <form ref={formRef} onSubmit={handleSubmit}>
+                {inputs.map(input => (
+                  <FormInputs
+                    key={input.id}
+                    name={input.name}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                    label={input.label}
+                    value={values[input.name]}
+                    onChange={onChange}
+                  />
+                ))}
+  
+                <button className='font-inter font-semibold text-md rounded-lg px-4 py-2 text-white bg-button-blue hover:bg-button-blue-hover mt-5 w-full'>Request</button>
+              </form>
+            </div>
+          )}
+        
       </div>
       
       <PopUpModal open={openModel} onClose={handleModalClose} isSuccess={isSuccess} message={message} />

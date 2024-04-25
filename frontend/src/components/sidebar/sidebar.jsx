@@ -34,11 +34,16 @@ const SideBar = ({ children }) => {
           <div className={`font-inter font-semibold text-white pl-1 overflow-hidden transition-all ${expanded? "w-full ml-3" : "w-0"}`}>Need any help ?</div>
           <div className={`font-inter text-gray mt-1 pl-1 overflow-hidden transition-all ${expanded? "w-full ml-3" : "w-0"}`}>Connect to CAPtivaX support</div>
           <div className='mt-3'>
-            <button className= {`h-10 rounded-lg bg-button-blue hover:bg-button-blue-hover text-white flex justify-center items-center text-sm font-inter font-semibold
+            {/* <button className= {`h-10 rounded-lg bg-button-blue hover:bg-button-blue-hover text-white flex justify-center items-center text-sm font-inter font-semibold
             overflow-hidden transition-all ${expanded? "w-full ml-3" : "w-0"}
             `}  >
               Connect CAPtivaX <span className='pl-2'></span><LaunchIcon sx={{ fontSize: 15}}/>
-            </button>
+            </button> */}
+            <a href="mailto:support@capx.co.in" className={`h-10 rounded-lg bg-button-blue hover:bg-button-blue-hover text-white flex justify-center items-center text-sm font-inter font-semibold
+            overflow-hidden transition-all ${expanded? "w-full ml-3" : "w-0"}
+            `}>
+              Connect CAPtivaX <span className='pl-2'></span><LaunchIcon sx={{ fontSize: 15}}/>
+            </a>
           </div>
         </div>
       </nav>
