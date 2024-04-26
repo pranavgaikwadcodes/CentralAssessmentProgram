@@ -27,7 +27,7 @@ const CardPage = () => {
         {loading ? (
           <div className="text-center">Loading...</div>
         ) : cardDetails ? (
-          <div className="card font-inter m-2 p-5 bg-green-100 drop-shadow-2xl">
+          <div className="card font-inter m-2 p-5 bg-green-100 drop-shadow-2xl hover:bg-green-300 transition-all ease-in-out duration-500 hover:p-6">
             <div className="heading text-xl font-extrabold mb-4">Card Details</div>
             <div className="details">
               {Object.entries(cardDetails).map(([key, value]) => (

@@ -58,7 +58,7 @@ const AssignedBundles = ({ cardNumber }) => {
       <h2 className="text-xl font-semibold mb-11">Bundles Assigned to this Card Number</h2>
       <ul>
         {bundles.map(bundle => (
-          <li key={bundle._id} className="mb-4">
+          <li key={bundle._id} className="mb-4 p-5 rounded-md bg-blue-200 hover:bg-blue-300 transition-all ease-in-out duration-700 ">
             <p className='font-bold'>Bundle Number: {bundle.bundle_number}</p>
             <p>Subject: {bundle.subject}</p>
             <p>Subject Code: {bundle.subjectCode}</p>

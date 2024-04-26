@@ -118,43 +118,100 @@ router.patch("/updateAdminAuth/:id", (req, res, next) => {
 // ============================================== //
 
 // College Related Routes
+// router.post("/addCollege/", (req, res, next) => {
+//   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+//     if (err) {
+//       return res.status(500).json({
+//         error: err,
+//       });
+//     }
+
+//     const collegeDetails = new CollegeDetails({
+//       _id: new mongoose.Types.ObjectId(),
+//       name: req.body.name,
+//       center_code: req.body.center_code,
+//       college_type: req.body.college_type,
+//       college_departments_count: req.body.college_departments_count,
+//       address: req.body.address,
+//       contact: req.body.contact,
+//       email: req.body.email,
+//       password: hashedPassword,
+//     });
+
+//     collegeDetails
+//       .save()
+//       .then((result) => {
+//         console.log(result);
+//         res.status(200).json({
+//           message: "College Added To Database",
+//           college_added: collegeDetails,
+//         });
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         res.status(500).json({
+//           error: err,
+//         });
+//       });
+//   });
+// });
+
 router.post("/addCollege/", (req, res, next) => {
-  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
-    if (err) {
-      return res.status(500).json({
+  // Check if a college with the same email or center code already exists
+  CollegeDetails.findOne({ $or: [{ email: req.body.email }, { center_code: req.body.center_code }, { contact: req.body.contact }] })
+    .then(existingCollege => {
+      if (existingCollege) {
+        // College with same email or center code already exists
+        return res.status(400).json({
+          error: "College with same email/phone or center code already exists",
+        });
+      } else {
+        // College doesn't exist, proceed with hashing password and saving details
+        bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+          if (err) {
+            return res.status(500).json({
+              error: err,
+            });
+          }
+
+          const collegeDetails = new CollegeDetails({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            center_code: req.body.center_code,
+            college_type: req.body.college_type,
+            college_departments_count: req.body.college_departments_count,
+            address: req.body.address,
+            contact: req.body.contact,
+            email: req.body.email,
+            password: hashedPassword,
+          });
+
+          collegeDetails
+            .save()
+            .then((result) => {
+              console.log(result);
+              res.status(200).json({
+                message: "College Added To Database",
+                college_added: collegeDetails,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json({
+                error: err,
+              });
+            });
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
         error: err,
       });
-    }
-
-    const collegeDetails = new CollegeDetails({
-      _id: new mongoose.Types.ObjectId(),
-      name: req.body.name,
-      center_code: req.body.center_code,
-      college_type: req.body.college_type,
-      college_departments_count: req.body.college_departments_count,
-      address: req.body.address,
-      contact: req.body.contact,
-      email: req.body.email,
-      password: hashedPassword,
     });
-
-    collegeDetails
-      .save()
-      .then((result) => {
-        console.log(result);
-        res.status(200).json({
-          message: "College Added To Database",
-          college_added: collegeDetails,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({
-          error: err,
-        });
-      });
-  });
 });
+
 
 router.get("/colleges/", (req, res, next) => {
   CollegeDetails.find()

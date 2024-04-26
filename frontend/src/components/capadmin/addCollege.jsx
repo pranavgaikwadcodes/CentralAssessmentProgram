@@ -88,9 +88,44 @@ const AddCollege = () => {
     },
   ];
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   // Make Axios POST request
+  //   axios.post('http://localhost:5000/admin/addCollege/', values)
+  //     .then(response => {
+  //       console.log(response.data);
+  //       setMessage('College added successfully!'); // Set the success message
+  //       setIsSuccess(true); // Set isSuccess to true
+  //       setOpenModel(true); // Open the modal upon successful college addition
+  //       // Delay form reset until after state updates
+  //       setTimeout(() => {
+  //         formRef.current.reset();
+  //       }, 0);
+  //       // Reset all input fields
+  //       setValues({
+  //         name: "",
+  //         center_code: "",
+  //         college_type: "Affiliated to SPPU",
+  //         college_departments_count: "",
+  //         address: "",
+  //         contact: "",
+  //         email: "",
+  //         password: "",
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error('Error adding college:', error);
+  //       setMessage('Failed to add college. Please try again.'); // Set the error message
+  //       setIsSuccess(false); // Set isSuccess to false
+  //       setOpenModel(true); // Open the modal upon error
+  //       // Handle error here
+  //     });
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // Make Axios POST request
     axios.post('http://localhost:5000/admin/addCollege/', values)
       .then(response => {
@@ -116,13 +151,23 @@ const AddCollege = () => {
       })
       .catch(error => {
         console.error('Error adding college:', error);
-        setMessage('Failed to add college. Please try again.'); // Set the error message
+        if (error.response) {
+          // The request was made and the server responded with a status code that falls out of the range of 2xx
+          // Display the error message from the server response
+          setMessage(error.response.data.error || 'Failed to add college. Please try again.');
+        } else if (error.request) {
+          // The request was made but no response was received
+          setMessage('No response received from server. Please try again later.');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          setMessage('An unexpected error occurred. Please try again.');
+        }
         setIsSuccess(false); // Set isSuccess to false
         setOpenModel(true); // Open the modal upon error
         // Handle error here
       });
   };
-
+  
 
   const handleChange = (e) => {
     // Update the state with the selected value

@@ -17,13 +17,13 @@ const DashboardPage = () => {
           <div className=" col-span-1 total-college-registered-card card font-inter m-2 p-5
           bg-white drop-shadow-2xl cursor-pointer flex flex-col justify-between h-36">
               <div className="heading text-xl	font-normal	">Total Bundles</div>
-              <div className="value font-semibold text-4xl text-text-blue pt-1.5">35</div>
+              <div className="value font-semibold text-4xl text-text-blue pt-1.5">45</div>
           </div>
 
           <div className="col-span-1 total-college-registered-card card font-inter m-2 p-5
           bg-white drop-shadow-2xl cursor-pointer flex flex-col justify-between">
               <div className="heading text-xl	font-normal	">Total Departments</div>
-              <div className="value font-semibold text-4xl text-text-blue pt-1.5">35</div>
+              <div className="value font-semibold text-4xl text-text-blue pt-1.5">10</div>
           </div>
           <div className="col-span-1 total-college-registered-card card font-inter m-2 p-5
           bg-white drop-shadow-2xl cursor-pointer flex flex-col justify-between">
@@ -34,7 +34,7 @@ const DashboardPage = () => {
           <div className="col-span-2 total-college-registered-card card font-inter m-2 p-5
           bg-white drop-shadow-2xl w-96 cursor-pointer flex flex-col justify-between ">
               <div className="heading text-xl	font-normal	">Total Teachers and HOD’s</div>
-              <div className="value font-semibold text-4xl text-text-blue pt-1.5">35</div>
+              <div className="value font-semibold text-4xl text-text-blue pt-1.5">12</div>
           </div>
         </div>
 
@@ -44,10 +44,10 @@ const DashboardPage = () => {
           bg-white drop-shadow-2xl cursor-pointer flex flex-col justify-between ">
               <div className="heading text-xl	font-normal	">Total Students in each year</div>
               <div className="value font-semibold text-4xl text-text-blue pt-1.5 ">
-                <h1><span>FE</span> : <span>Count</span></h1>
-                <h1><span>SE</span> : <span>Count</span></h1>
-                <h1><span>TE</span> : <span>Count</span></h1>
-                <h1><span>BE</span> : <span>Count</span></h1>
+                <h1><span>FE</span> : <span>70</span></h1>
+                <h1><span>SE</span> : <span>80</span></h1>
+                <h1><span>TE</span> : <span>80</span></h1>
+                <h1><span>BE</span> : <span>80</span></h1>
               </div>
           </div>
           
