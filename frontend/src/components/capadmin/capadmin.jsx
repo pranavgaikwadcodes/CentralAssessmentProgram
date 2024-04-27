@@ -4,7 +4,7 @@ import Dashboard from './dashboard';
 import AddCollege from './addCollege';
 import Settings from './settings';
 import LoginPage from './login';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate  } from 'react-router-dom';
 import ErrorPage from '../../404'; // Ensure correct path to your ErrorPage component
 
 // icons
@@ -14,6 +14,13 @@ import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const CAPadminPage = () => {
+  const handleLogout = () => {
+    // Perform logout actions, e.g., clear localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminID");
+    <Navigate to="../" />
+  };
+
   return (
     <div className='grid grid-cols-3 gap-0 min-h-screen'>
       <div className='fixed h-full'>
@@ -41,6 +48,7 @@ const CAPadminPage = () => {
             text="Logout"
             alert
             to="../"
+            onClick={handleLogout}
           />
         </SideBar>
       </div>

@@ -20,47 +20,55 @@ import BundlesPage from './bundles';
 import AddBundlePage from './addBundle';
 
 const CollegeAdmin = () => {
+    const handleLogout = () => {
+        // Perform logout actions, e.g., clear localStorage
+        localStorage.removeItem("token");
+        localStorage.removeItem("departmentID");
+        localStorage.removeItem("college_code");
+        localStorage.removeItem("departmentName");
+    };
     return (
         <div className='grid grid-cols-3 gap-0 min-h-screen'>
             <div className='fixed h-full'>
                 <SideBar>
-                    <SideBarItem  
+                    <SideBarItem
                         icon={<DashboardIcon />}
                         text="Dashboard"
                         alert
                         to="../DepartmentPortal/dashboard"
                     />
-                    <SideBarItem 
+                    <SideBarItem
                         icon={<GroupsIcon />}
                         text="Teachers"
                         alert
                         to="../DepartmentPortal/teachers"
                     />
-                    <SideBarItem 
+                    <SideBarItem
                         icon={<LibraryBooksIcon />}
                         text="Subjects"
                         alert
                         to="../DepartmentPortal/subjects"
                     />
-                    <SideBarItem 
+                    <SideBarItem
                         icon={<AutoAwesomeMotionIcon />}
                         text="Bundles"
                         alert
                         to="../DepartmentPortal/bundles"
                     />
-                    <SideBarItem 
+                    <SideBarItem
                         icon={<LogoutIcon />}
                         text="Logout"
                         alert
                         to="../"
+                        onClick={handleLogout}
                     />
                 </SideBar>
             </div>
-            
+
             <div className='col-span-3 overflow-auto pl-96'>
                 <Routes>
                     <Route path="/dashboard" element={<CollegePortalDashboard />} />
-                    <Route path="/subjects" element={<SubjectsPage />} />                    
+                    <Route path="/subjects" element={<SubjectsPage />} />
                     <Route path="/addSubject" element={<AddSubjectPage />} />
                     <Route path="/teachers" element={<TeachersPage />} />
                     <Route path="/addTeacher" element={<AddTeacherPage />} />

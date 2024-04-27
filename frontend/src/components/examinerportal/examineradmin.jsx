@@ -18,6 +18,14 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 
 const ExaminerAdmin = () => {
+    const handleLogout = () => {
+        // Perform logout actions, e.g., clear localStorage
+        localStorage.removeItem("token");
+        localStorage.removeItem("examinerID");
+        localStorage.removeItem("name");
+        localStorage.removeItem("email");
+        localStorage.removeItem("userID");
+    };
     return (
         <div className='grid grid-cols-3 gap-0 min-h-screen'>
             <div className='fixed h-full'>
@@ -51,6 +59,7 @@ const ExaminerAdmin = () => {
                         text="Logout"
                         alert
                         to="../examinerlogin"
+                        onClick={handleLogout}
                     />
                 </SideBar>
             </div>

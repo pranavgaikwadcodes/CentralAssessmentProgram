@@ -35,7 +35,7 @@ const DashboardPage = () => {
     'Center Code': college.center_code,
     Contact: college.contact,
     Email: college.email
-  }));
+  })).reverse();
 
   return (
     <>
