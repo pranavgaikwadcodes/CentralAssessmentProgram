@@ -13,7 +13,7 @@ const TeachersPage = () => {
 
   const fetchTeachers = async () => {
     try {
-      const collegeCode = localStorage.getItem('collegeCODE');
+      const collegeCode = localStorage.getItem('college_code');
       const department = localStorage.getItem('departmentName');
 
       // Fetch teachers using the college code and department

@@ -138,7 +138,7 @@ const PaymentPage = () => {
   return (
     <div className='m-10 mr-20 content flex flex-col'>
       <div className="header flex justify-between items-center">
-        <span className={`font-inter font-semibold text-4xl mr-96`}>Request Payment</span>
+        <span className={`font-inter font-semibold text-4xl mr-96`}>Payments</span>
       </div>
 
       <div className="body profile-settings-form flex flex-col">

@@ -21,7 +21,7 @@ const BundlesPage = () => {
   // Function to fetch bundles data by college code and department
   const fetchBundles = async () => {
     try {
-      const collegeCode = localStorage.getItem('collegeCODE'); // Get college code from local storage
+      const collegeCode = localStorage.getItem('college_code'); // Get college code from local storage
       const department = localStorage.getItem('departmentName'); // Get department name from local storage
       const response = await axios.get(`http://localhost:5000/collegePortal/bundles?college_code=${collegeCode}&department=${department}`);
       setBundles(response.data.bundles); // Set bundles data

@@ -13,7 +13,7 @@ const SubjectsPage = () => {
 
   const fetchSubjects = async () => {
     try {
-      const collegeCode = localStorage.getItem('collegeCODE');
+      const collegeCode = localStorage.getItem('college_code');
       const departmentName = localStorage.getItem('departmentName');
 
       // Fetch subjects using the college code and department
