@@ -201,7 +201,7 @@ const AddSubjectPage = () => {
                 value={selectedExaminer}
                 onChange={(e) => setSelectedExaminer(e.target.value)}
               >
-                <option value="">Select an Examiner</option>
+                <option value="" disabled>Select an Examiner</option>
                 {examiners.map((examiner) => (
                   <option key={examiner.userID} value={examiner.userID}>
                     {`${examiner.name} - ${examiner.email}`}

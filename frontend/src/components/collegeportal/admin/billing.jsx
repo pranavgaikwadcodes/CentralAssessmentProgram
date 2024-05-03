@@ -54,7 +54,7 @@ const BillingPage = () => {
   
       const response = await axios.post('http://localhost:5000/collegePortal/addBillingData', requestData);
       const response2 = await axios.patch(
-        `http://localhost:5000/examinerPortal/updatePaymentRequest/${localStorage.getItem('userID')}`,
+        `http://localhost:5000/examinerPortal/updatePaymentRequest/${requestData.userID}`,
         [{ propName: 'payment_status', value: 'paid' }]
       );
       

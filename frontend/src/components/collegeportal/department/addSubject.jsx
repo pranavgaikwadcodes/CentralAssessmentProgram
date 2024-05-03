@@ -97,7 +97,7 @@ const AddSubjectPage = () => {
       id: 5,
       name: "subject_type",
       options: [
-        { label: "Practical", value: "Practical" },
+        // { label: "Practical", value: "Practical" },
         { label: "Theory", value: "Theory" },
         { label: "Audit Cource", value: "Audit Cource" },
         { label: "Elective", value: "Elective" },

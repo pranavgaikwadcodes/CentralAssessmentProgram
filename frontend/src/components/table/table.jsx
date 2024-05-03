@@ -20,7 +20,7 @@ const Table = ({ columns, data }) => {
         {data.map((row, index) => (
           <tr key={index}>
             {columns.map((column, columnIndex) => (
-              <td key={columnIndex} className="px-6 py-4 whitespace-nowrap">
+              <td key={columnIndex} className="px-6 py-4 whitespace-nowrap max-w-80	text-wrap">
                 <div className="text-sm text-gray-900">{row[column]}</div>
               </td>
             ))}

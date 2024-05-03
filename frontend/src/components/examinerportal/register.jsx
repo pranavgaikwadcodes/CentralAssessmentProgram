@@ -69,8 +69,8 @@ const RegisterPage = () => {
       id: 7,
       name: 'experience',
       type: 'text',
-      placeholder: 'Experience',
-      label: 'Experience',
+      placeholder: 'Experience Years',
+      label: 'Experience Years',
     },
     {
       id: 8,
@@ -109,17 +109,52 @@ const RegisterPage = () => {
     },
   ];
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post("http://localhost:5000/examinerPortal/registerExaminer", values);
+  //     console.log(response.data);
+
+  //     // Save examiner details to localStorage
+  //     const { _id, name, email, userID } = response.data.examiner;
+  //     localStorage.setItem('examinerId', _id);
+  //     localStorage.setItem('examinerName', name);
+  //     localStorage.setItem('examinerEmail', email);
+  //     localStorage.setItem('userID', userID);
+      
+  //     // Redirect to dashboard or any other desired page
+  //     navigate("/ExaminerPortal/dashboard");
+  //   } catch (error) {
+  //     console.error('Error Registeraion:', error);
+  //     // Handle login error, show an error message or perform any other actions you need
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validation for PAN card number
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    if (!panRegex.test(values.PAN_card_number)) {
+      alert("PAN Card number should contain 10 characters with 5 uppercase letters followed by 4 digits and 1 uppercase letter.");
+      return;
+    }
+  
+    // Validation for bank account number
+    const bankAccountRegex = /^[0-9]{12}$/;
+    if (!bankAccountRegex.test(values.bank_account_number)) {
+      alert("Bank account number should contain 12 digits.");
+      return;
+    }
+  
     try {
       const response = await axios.post("http://localhost:5000/examinerPortal/registerExaminer", values);
       console.log(response.data);
-
+  
       // Save examiner details to localStorage
       const { _id, name, email, userID } = response.data.examiner;
-      localStorage.setItem('examinerId', _id);
-      localStorage.setItem('examinerName', name);
-      localStorage.setItem('examinerEmail', email);
+      localStorage.setItem('examinerID', _id);
+      localStorage.setItem('name', name);
+      localStorage.setItem('email', email);
       localStorage.setItem('userID', userID);
       
       // Redirect to dashboard or any other desired page
@@ -129,6 +164,7 @@ const RegisterPage = () => {
       // Handle login error, show an error message or perform any other actions you need
     }
   };
+  
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

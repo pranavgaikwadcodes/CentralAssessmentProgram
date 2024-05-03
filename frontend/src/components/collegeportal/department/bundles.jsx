@@ -89,7 +89,7 @@ const BundlesPage = () => {
         value={selectedExaminer[bundle._id] || ''}
         onChange={(e) => handleExaminerSelection(bundle._id, e.target.value)}
       >
-        <option value="">Select Examiner</option>
+        <option value="" disabled>Select Examiner</option>
         {examiners.map(examiner => (
           <option key={examiner.userID} value={examiner.userID}>
             {`${examiner.name} - ${examiner.email}`}

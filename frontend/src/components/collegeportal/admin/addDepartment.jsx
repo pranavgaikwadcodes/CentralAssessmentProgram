@@ -187,11 +187,12 @@ const AddDepartmentPage = () => {
   const generateUsernameAndPassword = (e) => {
     e.preventDefault();
     const { hod, hod_contact } = values;
-    const username = hod.replace(/\s+/g, '').toLowerCase();
+    let username = hod.replace(/\s+/g, '').toLowerCase(); // Using let instead of const
+    username = username.substring(0, 4); // Taking the first four letters
     const lastDigits = hod_contact.slice(-4);
     const password = username + lastDigits;
     setValues({ ...values, department_username: username, department_password: password });
-  };
+};
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -208,7 +209,7 @@ const AddDepartmentPage = () => {
       </div>
 
       <div className="body profile-settings-form flex flex-col">
-        <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-32 ">
+        <div className="profile-settings-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-full mt-20 ">
           <div className="heading font-inter text-xl font-normal mt-3 ml-2 mb-4">Fill to add new department profile</div>
           <form ref={formRef} onSubmit={handleSubmit}>
             {inputs.map((input) => (
