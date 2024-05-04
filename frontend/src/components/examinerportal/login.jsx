@@ -10,6 +10,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const inputs = [
@@ -49,11 +50,13 @@ const LoginPage = () => {
     } catch (error) {
       console.error('Error during login:', error);
       // Handle login error, show an error message or perform any other actions you need
+      setError("Invalid username or password");
     }
   };
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+    setError(null);
   };
 
   console.log(values);
@@ -72,7 +75,7 @@ const LoginPage = () => {
 
       <div className='body register-college-form flex flex-col'>
 
-        <div className="body register-college-form">
+        <div className="body register-college-form flex flex-col items-center">
           <div className="register-college-card card font-inter m-2 p-5 bg-white drop-shadow-2xl w-96 mt-32 ">
             <div className="heading font-inter text-xl font-normal mt-3 ml-2">Auth</div>
             <form onSubmit={handleSubmit}>
@@ -82,7 +85,7 @@ const LoginPage = () => {
               <button className='font-inter font-semibold text-md rounded-lg px-4 py-2 text-white bg-button-blue hover:bg-button-blue-hover mt-5 w-full'>Login</button>
             </form>
           </div>
-
+          {error && <div className="text-red-500 font-inter mt-5 ml-2">{error}</div>}
 
         </div>
 
