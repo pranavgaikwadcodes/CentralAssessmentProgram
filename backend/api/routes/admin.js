@@ -11,6 +11,17 @@ const checkAuth = require("../middleware/check-auth");
 const CollegeDetails = require("../models/collegeportal/collegedetails");
 const AdminDetails = require("../models/admin/admin");
 
+// GENERATE PASSWORD USING THIS 
+// bcrypt.hash("admin", 10, (err, hash) => {
+//   if (err) {
+//     console.error("Hashing error:", err);
+//   } else {
+//     console.log("Test Hash:", hash);
+//     bcrypt.compare(`admin`, hash, (err, result) => {
+//       console.log("Test Compare Result:", result);
+//     });
+//   }
+// });
 
 // Login
 router.post("/loginAdmin", (req, res, next) => {
