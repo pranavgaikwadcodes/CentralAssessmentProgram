@@ -4,6 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const RegisterPage = () => {
   const [values, setValues] = useState({
@@ -147,7 +148,7 @@ const RegisterPage = () => {
     }
   
     try {
-      const response = await axios.post("http://localhost:5000/examinerPortal/registerExaminer", values);
+      const response = await axios.post(`${BASE_URL}/examinerPortal/registerExaminer`, values);
       console.log(response.data);
   
       // Save examiner details to localStorage

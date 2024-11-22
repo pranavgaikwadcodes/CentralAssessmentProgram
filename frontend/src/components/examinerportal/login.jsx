@@ -4,6 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const LoginPage = () => {
   const [values, setValues] = useState({
@@ -33,7 +34,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/examinerPortal/loginExaminer", values);
+      const response = await axios.post(`${BASE_URL}/examinerPortal/loginExaminer`, values);
       const { token, examinerID, name, email, userID } = response.data;
       console.log(response.data);
 

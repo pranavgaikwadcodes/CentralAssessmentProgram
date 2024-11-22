@@ -4,6 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import PopUpModal from '../../popUp/popUpModal'; 
+import { BASE_URL } from '../../../helper/helper';
 
 
 const AddSubjectPage = () => {
@@ -33,7 +34,7 @@ const AddSubjectPage = () => {
   // Function to fetch examiners based on role
   const fetchExaminers = async (role) => {
     try {
-      const response = await axios.get(`http://localhost:5000/collegePortal/examiners/${role}`);
+      const response = await axios.get(`${BASE_URL}/collegePortal/examiners/${role}`);
       setExaminers(response.data.examiners);
     } catch (error) {
       console.error('Error fetching examiners:', error);
@@ -123,7 +124,7 @@ const AddSubjectPage = () => {
     e.preventDefault();
     try {
       const updatedValues = { ...values, assigned_to: selectedExaminer }; // Update assigned_to field
-      const response = await axios.post("http://localhost:5000/collegePortal/addBundle", updatedValues);
+      const response = await axios.post(`${BASE_URL}/collegePortal/addBundle`, updatedValues);
       console.log(response.data);
       setMessage('Bundle Added!'); // Set the success message
       setIsSuccess(true); // Set isSuccess to true

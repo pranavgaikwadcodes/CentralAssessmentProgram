@@ -3,6 +3,7 @@ import axios from 'axios';
 import './DashboardPage.css';
 import FormInputs from '../formInputs/formInputs';
 import PopUpModal from '../popUp/popUpModal';
+import { BASE_URL } from '../../helper/helper';
 
 const SettingsPage = () => {
 
@@ -40,7 +41,7 @@ const SettingsPage = () => {
 
   useEffect(() => {
     // Retrieve admin data from backend when the component mounts
-    axios.get("http://localhost:5000/admin/")
+    axios.get(`${BASE_URL}/admin/`)
       .then(response => {
         console.log("Admin data:", response.data); // Log the response data
         const adminData = response.data[0]; // Assuming there's only one admin, adjust as needed
@@ -75,7 +76,7 @@ const SettingsPage = () => {
     }
 
     try {
-      const response = await axios.patch(`http://localhost:5000/admin/updateAdminAuth/${adminId}`, values);
+      const response = await axios.patch(`${BASE_URL}/admin/updateAdminAuth/${adminId}`, values);
       console.log(response.data); // Log the response from the server
       setMessage('Updated successfully!'); // Set the success message
       setIsSuccess(true); // Set isSuccess to true

@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Table from '../../table/table'; // Import the Table component
 import axios from 'axios';
 import ConfirmationModal from '../../popUp/confirmationModal'; 
+import { BASE_URL } from '../../../helper/helper';
 
 const BundlesPage = () => {
   const [bundles, setBundles] = useState([]); // State to hold bundles data
@@ -23,7 +24,7 @@ const BundlesPage = () => {
     try {
       const collegeCode = localStorage.getItem('college_code'); // Get college code from local storage
       const department = localStorage.getItem('departmentName'); // Get department name from local storage
-      const response = await axios.get(`http://localhost:5000/collegePortal/bundles?college_code=${collegeCode}&department=${department}`);
+      const response = await axios.get(`${BASE_URL}/collegePortal/bundles?college_code=${collegeCode}&department=${department}`);
       setBundles(response.data.bundles); // Set bundles data
       setTotalBundles(response.data.bundles.length); // Set total number of bundles
       // Initialize selected examiner for each bundle
@@ -42,7 +43,7 @@ const BundlesPage = () => {
   // Function to fetch examiners data
   const fetchExaminers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/collegePortal/examiners/examiner');
+      const response = await axios.get(`${BASE_URL}/collegePortal/examiners/examiner`);
       setExaminers(response.data.examiners); // Set examiners data
     } catch (error) {
       console.error('Error fetching examiners:', error);
@@ -66,7 +67,7 @@ const BundlesPage = () => {
   const handleConfirmation = async () => {
     try {
       // Update selected examiner for the bundle in the database
-      await axios.patch(`http://localhost:5000/collegePortal/updateBundleToAssign/${selectedBundle}`, [{ assigned_to: selectedExaminer[selectedBundle] } ]);
+      await axios.patch(`${BASE_URL}/collegePortal/updateBundleToAssign/${selectedBundle}`, [{ assigned_to: selectedExaminer[selectedBundle] } ]);
       setConfirmationOpen(false); // Close the confirmation modal
     } catch (error) {
       console.error('Error updating bundle:', error);

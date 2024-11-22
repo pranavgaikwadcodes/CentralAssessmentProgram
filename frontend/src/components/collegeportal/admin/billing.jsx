@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import Table from '../../table/table';
 import axios from 'axios';
 import PopUpWithInput from '../../popUp/confirmationModalWithInput';
+import { BASE_URL } from '../../../helper/helper';
 
 const BillingPage = () => {
   const [requestedPayments, setRequestedPayments] = useState([]);
@@ -16,7 +17,7 @@ const BillingPage = () => {
   }, []);
 
   const fetchRequestedPayments = () => {
-    axios.get('http://localhost:5000/examinerPortal/examinerRequestedPaymentDetail')
+    axios.get(`${BASE_URL}/examinerPortal/examinerRequestedPaymentDetail`)
       .then(response => {
         setRequestedPayments(response.data.users);
       })
@@ -26,7 +27,7 @@ const BillingPage = () => {
   };
 
   const fetchTransactions = () => {
-    axios.get('http://localhost:5000/collegePortal/billing')
+    axios.get(`${BASE_URL}/collegePortal/billing`)
       .then(response => {
         setTransactions(response.data);
       })
@@ -52,9 +53,9 @@ const BillingPage = () => {
         amount: amount
       };
   
-      const response = await axios.post('http://localhost:5000/collegePortal/addBillingData', requestData);
+      const response = await axios.post(`${BASE_URL}/collegePortal/addBillingData`, requestData);
       const response2 = await axios.patch(
-        `http://localhost:5000/examinerPortal/updatePaymentRequest/${requestData.userID}`,
+        `${BASE_URL}/examinerPortal/updatePaymentRequest/${requestData.userID}`,
         [{ propName: 'payment_status', value: 'paid' }]
       );
       

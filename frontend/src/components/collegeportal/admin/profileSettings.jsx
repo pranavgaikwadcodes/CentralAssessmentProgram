@@ -6,6 +6,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { NavLink } from 'react-router-dom';
 import PopUpModal from '../../popUp/popUpModal';
 import axios from 'axios'; // Import axios for making HTTP requests
+import { BASE_URL } from '../../../helper/helper';
 
 const ProfileSettingsPage = () => {
 
@@ -42,7 +43,7 @@ const ProfileSettingsPage = () => {
   }, []);
 
   const fetchCollegeDetails = (collegeId) => {
-    axios.get(`http://localhost:5000/collegePortal/collegeDetails/${collegeId}`) // Fetch college details by ID
+    axios.get(`${BASE_URL}/collegePortal/collegeDetails/${collegeId}`) // Fetch college details by ID
       .then(response => {
         const collegeData = response.data;
         setValues({
@@ -64,7 +65,7 @@ const ProfileSettingsPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.patch(`http://localhost:5000/collegePortal/updateCollege/${values.collegeID}`, [
+    axios.patch(`${BASE_URL}/collegePortal/updateCollege/${values.collegeID}`, [
       { propName: "name", value: values.collegeName },
       { propName: "center_code", value: values.centerID },
       { propName: "contact", value: values.phoneNumber },

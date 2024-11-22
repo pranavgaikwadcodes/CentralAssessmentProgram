@@ -4,6 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import PopUpModal from '../../popUp/popUpModal';
+import { BASE_URL } from '../../../helper/helper';
 
 const AddSubjectPage = () => {
 
@@ -70,7 +71,7 @@ const AddSubjectPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/collegePortal/addSubject", values);
+      const response = await axios.post(`${BASE_URL}/collegePortal/addSubject`, values);
       console.log(response.data);
       setMessage('Subject Added!'); // Set the success message
       setIsSuccess(true); // Set isSuccess to true

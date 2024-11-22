@@ -4,6 +4,7 @@ import FormInputs from '../../formInputs/formInputs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'; 
 import axios from 'axios';
 import PopUpModal from '../../popUp/popUpModal';
+import { BASE_URL } from '../../../helper/helper';
 
 const AddDepartmentPage = () => {
   
@@ -164,7 +165,7 @@ const AddDepartmentPage = () => {
     e.preventDefault();
 
     // Send a POST request to the backend route '/addDepartment/'
-    axios.post('http://localhost:5000/collegePortal/addDepartment/', values)
+    axios.post(`${BASE_URL}/collegePortal/addDepartment/`, values)
       .then(response => {
         console.log(response.data);
         setMessage('Department Added!'); // Set the success message

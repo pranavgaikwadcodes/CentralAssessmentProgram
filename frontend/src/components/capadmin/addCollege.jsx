@@ -4,6 +4,7 @@ import FormInputs from '../formInputs/formInputs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import axios from 'axios';
 import PopUpModal from '../popUp/popUpModal';
+import { BASE_URL } from '../../helper/helper';
 
 const AddCollege = () => {
 
@@ -127,7 +128,7 @@ const AddCollege = () => {
     e.preventDefault();
   
     // Make Axios POST request
-    axios.post('http://localhost:5000/admin/addCollege/', values)
+    axios.post(`${BASE_URL}/admin/addCollege/`, values)
       .then(response => {
         console.log(response.data);
         setMessage('College added successfully!'); // Set the success message

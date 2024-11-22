@@ -3,6 +3,7 @@ import FormInputs from '../../formInputs/formInputs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../../../helper/helper';
 
 const LoginPage = () => {
   const [values, setValues] = useState({
@@ -32,7 +33,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/collegePortal/loginDepartment", {
+      const response = await axios.post(`${BASE_URL}/collegePortal/loginDepartment`, {
         department_username: values.username,
         department_password: values.password,
       });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const CardPage = () => {
   const [cardDetails, setCardDetails] = useState(null);
@@ -8,7 +9,7 @@ const CardPage = () => {
   useEffect(() => {
     const userID = localStorage.getItem('userID'); // Assuming you store the userID in localStorage
     if (userID) {
-      axios.get(`http://localhost:5000/examinerPortal/card/${userID}`)
+      axios.get(`${BASE_URL}/examinerPortal/card/${userID}`)
         .then(response => {
           setCardDetails(response.data.Card_Details);
           setLoading(false);

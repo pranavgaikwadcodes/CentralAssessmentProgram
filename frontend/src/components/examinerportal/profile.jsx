@@ -6,6 +6,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { NavLink } from 'react-router-dom';
 import PopUpModal from '../popUp/popUpModal';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const ProfilePage = () => {
   const [openModel, setOpenModel] = useState(false);
@@ -41,7 +42,7 @@ const ProfilePage = () => {
   }, []);
 
   const fetchExaminerDetails = (examinerId) => {
-    axios.get(`http://localhost:5000/examinerPortal/examiner/${examinerId}`)
+    axios.get(`${BASE_URL}/examinerPortal/examiner/${examinerId}`)
       .then(response => {
         const examinerData = response.data.examiner;
         setValues({
@@ -64,7 +65,7 @@ const ProfilePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.patch(`http://localhost:5000/examinerPortal/updateProfile/${localStorage.getItem('examinerID')}`, [
+    axios.patch(`${BASE_URL}/examinerPortal/updateProfile/${localStorage.getItem('examinerID')}`, [
       { propName: "name", value: values.name },
       { propName: "phone", value: values.phone },
       { propName: "college_name", value: values.college_name },

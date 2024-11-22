@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import Table from '../../table/table'; // Import the Table component
+import { BASE_URL } from '../../../helper/helper';
 
 const SubjectsPage = () => {
   const [totalSubjects, setTotalSubjects] = useState(0);
@@ -17,7 +18,7 @@ const SubjectsPage = () => {
       const departmentName = localStorage.getItem('departmentName');
 
       // Fetch subjects using the college code and department
-      const response = await fetch(`http://localhost:5000/collegePortal/subjects/${departmentName}?college_code=${collegeCode}`);
+      const response = await fetch(`${BASE_URL}/collegePortal/subjects/${departmentName}?college_code=${collegeCode}`);
       if (!response.ok) {
         throw new Error('Failed to fetch subjects');
       }

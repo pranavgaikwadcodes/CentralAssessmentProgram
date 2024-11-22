@@ -5,6 +5,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { NavLink } from 'react-router-dom';
 import PopUpModal from '../../popUp/popUpModal';
 import axios from 'axios';
+import { BASE_URL } from '../../../helper/helper';
 
 const SettingsPage = () => {
   
@@ -46,7 +47,7 @@ const SettingsPage = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.patch(`http://localhost:5000/collegePortal/updateCollege/65ff10fee8c642085f6b699d`, [
+    axios.patch(`${BASE_URL}/collegePortal/updateCollege/65ff10fee8c642085f6b699d`, [
       { propName: "email", value: values.email },
       { propName: "password", value: values.password },
     ])

@@ -5,6 +5,7 @@ import PopUpModal from '../popUp/popUpModal';
 import axios from 'axios';
 import CardPage from './card';
 import AssignedBundles from './assignedBundles';
+import { BASE_URL } from '../../helper/helper';
 
 const IssueCardPage = () => {
   const [openModel, setOpenModel] = useState(false);
@@ -40,7 +41,7 @@ const IssueCardPage = () => {
   }, []);
 
   const fetchExaminerDetails = (examinerId) => {
-    axios.get(`http://localhost:5000/examinerPortal/examiner/${examinerId}`)
+    axios.get(`${BASE_URL}/examinerPortal/examiner/${examinerId}`)
       .then(response => {
         const examinerData = response.data.examiner;
         setValues({
@@ -84,13 +85,13 @@ const IssueCardPage = () => {
     };
 
     // Send the Axios request to add the card
-    axios.post(`http://localhost:5000/examinerPortal/addCard`, updatedValues)
+    axios.post(`${BASE_URL}/examinerPortal/addCard`, updatedValues)
       .then(response => {
         // Once the card is successfully added, update the profile with the card number
         const cardNumber = response.data.Card_Details.card_number;
 
         // Send the Axios request to update the profile with the card number
-        axios.patch(`http://localhost:5000/examinerPortal/updateProfile/${localStorage.getItem('examinerID')}`,
+        axios.patch(`${BASE_URL}/examinerPortal/updateProfile/${localStorage.getItem('examinerID')}`,
           [{ propName: "card_number", value: cardNumber }]
         )
           .then(updateResponse => {

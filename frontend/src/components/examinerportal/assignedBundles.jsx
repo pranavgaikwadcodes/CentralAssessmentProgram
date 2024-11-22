@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const AssignedBundles = ({ cardNumber }) => {
   const [bundles, setBundles] = useState([]);
@@ -9,7 +10,7 @@ const AssignedBundles = ({ cardNumber }) => {
   useEffect(() => {
     const fetchAssignedBundles = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/examinerPortal/assigned/${cardNumber}`);
+        const response = await axios.get(`${BASE_URL}/examinerPortal/assigned/${cardNumber}`);
         setBundles(response.data.bundles);
         setLoading(false);
       } catch (error) {
@@ -23,7 +24,7 @@ const AssignedBundles = ({ cardNumber }) => {
 
   const handleStatusChange = async (bundleId, newStatus) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/collegePortal/updateBundle/${bundleId}`, [
+      const response = await axios.patch(`${BASE_URL}/collegePortal/updateBundle/${bundleId}`, [
         { propName: 'bundle_status', value: newStatus }
       ]);
       console.log(response.data.message);

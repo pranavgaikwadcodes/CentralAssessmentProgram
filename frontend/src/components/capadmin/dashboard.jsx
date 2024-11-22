@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { NavLink, Outlet } from 'react-router-dom';
 import Table from '../table/table'; // Import the Table component
+import { BASE_URL } from '../../helper/helper';
 
 const DashboardPage = () => {
   const [colleges, setColleges] = useState([]);
@@ -13,7 +14,7 @@ const DashboardPage = () => {
 
   const fetchColleges = async () => {
     try {
-      const response = await fetch('http://localhost:5000/admin/colleges/');
+      const response = await fetch(`${BASE_URL}/admin/colleges/`);
       if (!response.ok) {
         throw new Error('Failed to fetch colleges');
       }

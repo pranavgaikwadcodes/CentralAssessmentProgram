@@ -4,6 +4,7 @@ import FormInputs from '../formInputs/formInputs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const LoginPage = () => {
   const [values, setValues] = useState({
@@ -33,7 +34,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/admin/loginAdmin", values);
+      const response = await axios.post(`${BASE_URL}/admin/loginAdmin`, values);
       const { token, adminID } = response.data;
 
       // Store the token and adminID in local storage

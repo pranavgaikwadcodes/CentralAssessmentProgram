@@ -3,6 +3,7 @@ import '../collegeportal/admin/collegeportal.css';
 import FormInputs from '../formInputs/formInputs';
 import PopUpModal from '../popUp/popUpModal';
 import axios from 'axios';
+import { BASE_URL } from '../../helper/helper';
 
 const PaymentPage = () => {
   const [openModel, setOpenModel] = useState(false);
@@ -52,7 +53,7 @@ const PaymentPage = () => {
   }, [paymentStatus]);
 
   const fetchExaminerDetails = (examinerId) => {
-    axios.get(`http://localhost:5000/examinerPortal/examiner/${examinerId}`)
+    axios.get(`${BASE_URL}/examinerPortal/examiner/${examinerId}`)
       .then(response => {
         const examinerData = response.data.examiner;
         setValues((prevValues) => ({
@@ -68,7 +69,7 @@ const PaymentPage = () => {
   };
 
   const fetchPaymentDetails = (userID) => {
-    axios.get(`http://localhost:5000/examinerPortal/examinerPaymentDetail/${userID}`)
+    axios.get(`${BASE_URL}/examinerPortal/examinerPaymentDetail/${userID}`)
       .then(response => {
         const userData = response.data.user;
         console.log("Payment Info: " + userData);
@@ -82,7 +83,7 @@ const PaymentPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   
-    axios.post(`http://localhost:5000/examinerPortal/RequestPayment`, values)
+    axios.post(`${BASE_URL}/examinerPortal/RequestPayment`, values)
       .then(response => {
         console.log(response.data);
         setMessage('Payment requested successfully');
